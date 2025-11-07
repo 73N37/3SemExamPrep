@@ -403,10 +403,11 @@ SkillDAO
     110011
      */
     
-    public 
+    public
     void
-    populate
-            ()
+    populate(
+            java.util.Set skills
+    )
     {
         try
                 (
@@ -414,86 +415,14 @@ SkillDAO
                 )
         {
             em.getTransaction().begin();
-
-            java.util.Set skills = new java.util.HashSet();
-
-            // Clear existing data from database
-            em.createQuery
-                    (
-                            "DELETE FROM Skill"
-                    ).executeUpdate();
-
-            // Create sample skills
-            skills.add(new dat.entities.Skill
-                    (
-                            "Java",
-                            "java",
-                            dat.entities.SkillCategory.PROG_LANG,
-                            "General-purpose programming language"
-                    ));
-
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "Spring Boot",
-                            "spring-boot",
-                            dat.entities.SkillCategory.FRAMEWORK,
-                            "Java framework for microservices"
-                    ));
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "PostgreSQL",
-                            "postgresql",
-                            dat.entities.SkillCategory.DB,
-                            "Relational database system"
-                    ));
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "Docker",
-                            "docker",
-                            dat.entities.SkillCategory.DEVOPS,
-                            "Container platform"
-                    ));
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "React",
-                            "react",
-                            dat.entities.SkillCategory.FRONTEND,
-                            "JavaScript UI library"
-                    ));
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "JUnit",
-                            "junit",
-                            dat.entities.SkillCategory.TESTING,
-                            "Testing framework for projects build in Java"
-                    ));
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "TensorFlow",
-                            "tensorflow",
-                            dat.entities.SkillCategory.DATA,
-                            "Data science and analytics tool"
-                    ));
-
-            skills.add(new dat.entities.Skill
-                    (
-                            "React",
-                            "react",
-                            dat.entities.SkillCategory.FRAMEWORK,
-                            "Application framework build in NodeJS"
-                    ));
-
             // I changed this since I only use the variable names to persist.
             // I might as well just create a HashSet to avoid duplicates,
             // while avoiding redundant variables, since it can just use a lambda
             // expression to persist every object within my 'skills' HasSet
-            skills.stream().forEach( x -> em.persist(x));
+            skills.stream().forEach(
+                    x -> em.persist(x)
+            );
+
             em.getTransaction().commit();
         }
     }

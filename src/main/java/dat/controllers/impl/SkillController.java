@@ -10,8 +10,7 @@ SkillController
     private final dat.daos.impl.SkillDAO dao;
 
     public 
-    SkillController
-            ()
+    SkillController()
     {
         jakarta.persistence.EntityManagerFactory emf    = dat.config.HibernateConfig.getEntityManagerFactory();
         this.dao                                        = dat.daos.impl.SkillDAO.getInstance(emf);
@@ -20,233 +19,283 @@ SkillController
     @Override
     public 
     void
-    read
-            (
-                    io.javalin.http.Context ctx
-            )
+    read(
+            io.javalin.http.Context ctx
+    )
     {
-        java.lang.Long  id  =   ctx.pathParamAsClass("id",
-                                                     java.lang.Long.class)
-                                   .check(this::validatePrimaryKey,
-                                         "Not a valid id (Primary Key)")
-                                   .get();
+        java.lang.Long      id          = null;
+        dat.dtos.SkillDTO   skillDTO    = null;
 
-        dat.dtos.SkillDTO skillDTO = null;
-        try
-        {
-            skillDTO = dao.read(Long.valueOf(id));
+        try {
+            id      =   ctx.pathParamAsClass(
+                            "id",
+                            java.lang.Long.class).check(
+                                    this::validatePrimaryKey,
+                                    "Not a valid id (Primary Key)"
+                            ).get();
 
-            if (skillDTO == null) throw new java.lang.Exception("skillDTO is not allowed to be null\nSkillController.read(Context)");
-        } 
-        catch
-        (
+            skillDTO =  dao.read(
+                            Long.valueOf(
+                                    id
+                            )
+            );
+        } catch (
                 dat.exceptions.ApiException ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().apiExceptionHandler(ex ,ctx);
-        }
-        catch
-        (
+        ) {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        } catch (
                 java.lang.Exception ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().exceptionHandler(ex ,ctx);
+        ) {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
         }
 
-        ctx.res().setStatus
-                (
-                        200
-                );
+        if (
+                skillDTO    == null ||
+                id          == null
+        ) {
+            ctx.res().setStatus(
+                    502
+            );
+        } else {
+            ctx.res().setStatus
+                    (
+                            200
+                    );
 
-        ctx.json
-                (
-                        skillDTO,
-                        dat.dtos.SkillDTO.class
-                );
+            ctx.json(
+                    skillDTO,
+                    dat.dtos.SkillDTO.class
+            );
+        }
     }
 
     @Override
     public
     void
-    readAll
-            (
-                    io.javalin.http.Context ctx
-            )
-    {
+    readAll(
+            io.javalin.http.Context ctx
+    ) {
         java.util.List<dat.dtos.SkillDTO> skillDTOs = null;
-        try
-        {
+
+        try {
             skillDTOs = dao.readAll();
-            if (skillDTOs == null || skillDTOs.isEmpty()) throw new java.lang.Exception("skillDTOs is not allowed to be null\nSkillController.readAll()");
-        }
-        catch
-        (
+        } catch (
                 dat.exceptions.ApiException ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().apiExceptionHandler(ex ,ctx);
-        }
-        catch
-        (
+        ) {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        } catch (
                 java.lang.Exception ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().exceptionHandler(ex ,ctx);
+        ) {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
         }
 
-        ctx.res().setStatus
-                (
-                        200
-                );
+        if (
+                skillDTOs == null ||
+                skillDTOs.isEmpty()
+        ) {
+            ctx.res().setStatus(
+                    502
+            );
+        } else {
+            ctx.res().setStatus
+                    (
+                            200
+                    );
 
-        ctx.json
-                (
-                        skillDTOs,
-                        dat.dtos.SkillDTO.class
-                );
+            ctx.json(
+                    skillDTOs,
+                    dat.dtos.SkillDTO.class
+            );
+        }
     }
 
     @Override
     public
     void
-    create
-            (
-                    io.javalin.http.Context ctx
-            )
-    {
+    create(
+            io.javalin.http.Context ctx
+    ) {
         dat.dtos.SkillDTO jsonRequest   = validateEntity(ctx);
         dat.dtos.SkillDTO skillDTO      = null;
 
-        try
-        {
-            skillDTO = dao.create(jsonRequest);
-            if (skillDTO == null) throw new java.lang.Exception("skillDTO is not allowed to be null\nSkillController.create(Context)");
-        }
-        catch
-        (
+        try {
+            skillDTO = dao.create(
+                    jsonRequest
+            );
+        } catch (
                 dat.exceptions.ApiException ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().apiExceptionHandler(ex ,ctx);
-        }
-        catch
-        (
+        )   {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        } catch (
                 java.lang.Exception ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().exceptionHandler(ex ,ctx);
+        )   {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
         }
 
-        ctx.res().setStatus
-                (
-                        201
-                );
+        if (
+                skillDTO == null ||
+                jsonRequest == null
+        )   {
+            ctx.res().setStatus(
+                    502
+            );
+        }   else {
+            ctx.res().setStatus(
+                    201
+            );
 
-        ctx.json
-                (
-                        skillDTO,
-                        dat.dtos.SkillDTO.class
-                );
+            ctx.json(
+                    skillDTO,
+                    dat.dtos.SkillDTO.class
+            );
+        }
     }
 
     @Override
     public
     void
-    update
-            (
-                    io.javalin.http.Context ctx
-            )
-    {
-        Long id = ctx.pathParamAsClass("id", Long.class)
-                .check(this::validatePrimaryKey, "Not a valid id")
-                .get();
+    update(
+            io.javalin.http.Context ctx
+    ) {
+        java.lang.Long      id          = null;
 
-        dat.dtos.SkillDTO skillDTO = null;
+        dat.dtos.SkillDTO   skillDTO    = null;
 
         try
         {
-            skillDTO = dao.update
-                    (
-                            Long.valueOf(id),
-                            validateEntity(ctx)
+            id = ctx.pathParamAsClass(
+                    "id",
+                    java.lang.Long.class).check(
+                            this::validatePrimaryKey,
+                    "Not a valid id"
+                    ).get();
+
+            skillDTO = dao.update(
+                            Long.valueOf(
+                                    id
+                            ),
+                            validateEntity(
+                                    ctx
+                            )
                     );
-
-            if (skillDTO == null) throw new java.lang.Exception("skillDTO is not allowed to be null\nSkillController.update(Context)");
-        }
-        catch
-        (
+        } catch (
                 dat.exceptions.ApiException ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().apiExceptionHandler(ex ,ctx);
-        }
-        catch
-        (
+        ) {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        } catch (
                 java.lang.Exception ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().exceptionHandler(ex ,ctx);
+        ) {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
         }
 
-        ctx.res().setStatus(200);
-        ctx.json(skillDTO, dat.dtos.SkillDTO.class);
+        if (
+                skillDTO    == null ||
+                id          == null
+        ) {
+            ctx.res().setStatus(
+                    502
+            );
+        } else {
+            ctx.res().setStatus(
+                    200
+            );
+            ctx.json(
+                    skillDTO,
+                    dat.dtos.SkillDTO.class
+            );
+        }
     }
 
     @Override
     public
     void
-    delete
-            (
-                    io.javalin.http.Context ctx
-            )
-    {
+    delete(
+            io.javalin.http.Context ctx
+    ) {
+        java.lang.Long id = null;
         try
         {
-            Long id = ctx.pathParamAsClass("id", Long.class)
-                    .check(this::validatePrimaryKey, "Not a valid id")
-                    .get();
-            dao.delete(Long.valueOf(id));
-            if (id == null) throw new java.lang.Exception("id is noty allowed to be null\nSkillController.delete(Context");
-        }
-        catch
-        (
+            id = ctx.pathParamAsClass(
+                    "id",
+                    java.lang.Long.class).check(
+                            this::validatePrimaryKey,
+                    "Not a valid id"
+                    ).get();
+
+            dao.delete(
+                    Long.valueOf(
+                            id
+                    )
+            );
+        } catch (
                 dat.exceptions.ApiException ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().apiExceptionHandler(ex ,ctx);
+        ) {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex ,
+                    ctx
+            );
         }
-        catch
-        (
+        catch (
                 java.lang.Exception ex
-        )
-        {
-            new dat.controllers.impl.ExceptionController().exceptionHandler(ex ,ctx);
+        ) {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex ,
+                    ctx
+            );
         }
-        ctx.res().setStatus
-                (
-                        204
-                );
+
+        if (
+                id == null
+        ) {
+            ctx.res().setStatus(
+                    502
+            );
+        } else {
+            ctx.res().setStatus(
+                    204
+            );
+        }
     }
 
     @Override
     public
     boolean
-    validatePrimaryKey
-            (
-                    java.lang.Long id
-            )
-    {
+    validatePrimaryKey(
+            java.lang.Long id
+    ) {
         return dao.validatePrimaryKey(id);
     }
 
     @Override
     public
     dat.dtos.SkillDTO
-    validateEntity
-            (
-                    io.javalin.http.Context ctx
-            )
-    {
+    validateEntity(
+            io.javalin.http.Context ctx
+    ) {
         return ctx.bodyValidator
                         (
                                 dat.dtos.SkillDTO.class
@@ -259,19 +308,19 @@ SkillController
 
     public
     void
-    populate
-            (
-                    io.javalin.http.Context ctx
-            )
-    {
-        dao.populate();
-        ctx.res().setStatus
-                (
-                        200
-                );
-        ctx.json
-                (
-                        "{ \"message\": \"Candidates have been populate\" }"
-                );
+    populate(
+            io.javalin.http.Context ctx
+    ) {
+        dao.populate(
+                dat.config.Populate.getSkills()
+        );
+
+        ctx.res().setStatus(
+                200
+        );
+
+        ctx.json(
+                "{ \"message\": \"Candidates have been populate\" }"
+        );
     }
 }

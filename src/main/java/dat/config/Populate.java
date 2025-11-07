@@ -39,45 +39,52 @@ Populate
     {
         return java.util.Set.of(
                 new dat.entities.Skill(
-                        "Java",
-                        "java",
-                        dat.entities.SkillCategory.PROG_LANG,
-                        "Cross-platform Object Oriented Programming language"
+                                "Java",
+                                "java",
+                                dat.entities.SkillCategory.PROG_LANG,
+                                "General-purpose programming language"
                 ),
 
                 new dat.entities.Skill(
-                        "C++",
-                        "cpp",
-                        dat.entities.SkillCategory.PROG_LANG,
-                        "Lower-level Object Oriented Programming language"
+                        "Spring Boot",
+                        "spring-boot",
+                        dat.entities.SkillCategory.FRAMEWORK,
+                        "Java framework for microservices"
                 ),
 
                 new dat.entities.Skill(
                         "PostgreSQL",
                         "postgresql",
                         dat.entities.SkillCategory.DB,
-                        "Database language"
+                        "Relational database system"
                 ),
 
                 new dat.entities.Skill(
                         "Docker",
                         "docker",
                         dat.entities.SkillCategory.DEVOPS,
-                        "Virtual server to test network applications"
+                        "Container platform"
                 ),
 
                 new dat.entities.Skill(
-                        "HTML",
-                        "html",
+                        "React",
+                        "react",
                         dat.entities.SkillCategory.FRONTEND,
-                        "Markdown language for creating static webpages"
+                        "JavaScript UI library"
                 ),
 
                 new dat.entities.Skill(
                         "JUnit",
                         "junit",
                         dat.entities.SkillCategory.TESTING,
-                        "A framework for testing applications created in Java"
+                        "Testing framework for projects build in Java"
+                ),
+
+                new dat.entities.Skill(
+                        "TensorFlow",
+                        "tensorflow",
+                        dat.entities.SkillCategory.DATA,
+                        "Data science and analytics tool"
                 )
         );
     }

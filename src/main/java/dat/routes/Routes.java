@@ -15,8 +15,15 @@ public class Routes
     {
         return () ->
         {
-                path("/skills",     skillRoute.getRoutes());
-                path("/candidates",  candidateRoute.getRoutes());
+                path(
+                        "/skills",
+                        skillRoute.getRoutes()
+                );
+
+                path(
+                        "/candidates",
+                        candidateRoute.getRoutes()
+                );
         };
     }
 }
