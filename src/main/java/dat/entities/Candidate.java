@@ -22,7 +22,7 @@ Candidate {
     private String education;
 
 
-    private double AveragePopularityScore;
+    private double averagePopularityScore;
 
     @jakarta.persistence.ManyToMany(
             fetch = jakarta.persistence.FetchType.EAGER
@@ -36,7 +36,7 @@ Candidate {
                     name = "skill_id"
             )
     )
-    private java.util.Set<Skill> skills = new java.util.HashSet<>();
+    private java.util.Set<dat.entities.Skill> skills = new java.util.HashSet<>();
 
     protected Candidate(){} // Required by JPA & Jackson
 
@@ -46,14 +46,13 @@ Candidate {
                     java.lang.String name,
                     java.lang.String phone,
                     java.lang.String education,
-                    java.util.Set<Skill> skills
+                    java.util.Set<dat.dtos.SkillDTO> skills
             )
     {
-        this.id = id;
         this.name = name;
         this.phone = phone;
         this.education = education;
-        this.skills = skills;
+        skills.stream();
     }
 
 
@@ -94,6 +93,6 @@ Candidate {
                     double value
             )
     {
-        this.AveragePopularityScore = value;
+        this.averagePopularityScore = value;
     }
 }

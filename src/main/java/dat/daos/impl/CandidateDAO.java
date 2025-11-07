@@ -15,13 +15,10 @@ CandidateDAO
     public 
     static
     CandidateDAO
-    getInstance
-            (
-                    jakarta.persistence.EntityManagerFactory _emf
-            ) 
-    {
-        if (instance == null) 
-        {
+    getInstance(
+            jakarta.persistence.EntityManagerFactory _emf
+    ) {
+        if (instance == null) {
             emf = _emf;
             instance = new CandidateDAO();
         }
@@ -31,21 +28,22 @@ CandidateDAO
     @Override
     public
     dat.dtos.CandidateDTO
-    read
-            (
-                    java.lang.Long id
-            )   throws dat.exceptions.ApiException
-    {
+    read(
+            java.lang.Long id
+    )   throws dat.exceptions.ApiException {
         try (
                 jakarta.persistence.EntityManager em = emf.createEntityManager()
-        )
-        {
+        ) {
             dat.entities.Candidate candidate = em.find(
                     dat.entities.Candidate.class,
                     id
             );
 
-            if (candidate == null) return null;
+            if (
+                    candidate == null
+            ) throw new dat.exceptions.ApiException(
+                    502,
+                    "Was not able to retrieve a database entry with id="+id + "\nCandidateDAO.read(Long)");
 
             dat.dtos.CandidateDTO dto = new dat.dtos.CandidateDTO(
                     candidate
@@ -61,20 +59,18 @@ CandidateDAO
 
     private
     void
-    enrichWithStats
-            (
-                    dat.dtos.CandidateDTO dto
-            )
+    enrichWithStats(
+            dat.dtos.CandidateDTO dto
+    )   throws dat.exceptions.ApiException
     {
-        skillStatsService.enrichSkills(dto.skills());
+            skillStatsService.enrichSkills(dto.skills());
         // The skills in dto are already updated by reference since enrichSkills modifies them
     }
 
     @Override
     public
     java.util.List<dat.dtos.CandidateDTO>
-    readAll
-            ()  throws dat.exceptions.ApiException
+    readAll () throws dat.exceptions.ApiException
     {
         try (
                 jakarta.persistence.EntityManager em = emf.createEntityManager()

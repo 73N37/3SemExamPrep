@@ -3,19 +3,24 @@ package dat.dtos;
 public
 record
 SkillDTO(
+        @com.fasterxml.jackson.annotation.JsonProperty("id")
                 java.lang.Long                  id,
 
+        @com.fasterxml.jackson.annotation.JsonProperty("name")
         @org.jetbrains.annotations.NotNull
                 java.lang.String                name,
 
+        @com.fasterxml.jackson.annotation.JsonProperty("slug")
         @org.jetbrains.annotations.NotNull
                 java.lang.String                slug,
 
+        @com.fasterxml.jackson.annotation.JsonProperty("category")
         @jakarta.persistence.Enumerated(
                 jakarta.persistence.EnumType.STRING
         )
                 dat.entities.SkillCategory      category,
 
+        @com.fasterxml.jackson.annotation.JsonProperty("description")
         @org.jetbrains.annotations.NotNull
                 java.lang.String                description
 )

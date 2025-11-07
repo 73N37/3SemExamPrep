@@ -1,90 +1,158 @@
 package dat.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import dat.dtos.SkillStatsDTO;
-import dat.entities.Skill;
+public
+class
+SkillStatsService
+{
+    private static final    java.lang.String                            API_URL = "https://api.example.com/tech-skills";
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+    private final           java.net.http.HttpClient                    client;
 
-public class SkillStatsService {
-    private static final String API_URL = "https://api.example.com/tech-skills";
-    private final HttpClient client;
-    private final ObjectMapper objectMapper;
+    private final           com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
-    public SkillStatsService() {
-        this.client = HttpClient.newHttpClient();
-        this.objectMapper = new ObjectMapper();
-        this.objectMapper.registerModule(new JavaTimeModule());
-        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    public
+    SkillStatsService
+            () {
+        this.client         = java.net.http.HttpClient.newHttpClient();
+
+        this.objectMapper   = new com.fasterxml.jackson.databind.ObjectMapper();
+
+        this.objectMapper.registerModule(
+                new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule()
+        );
+
+        this.objectMapper.disable(
+                com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
+        );
     }
 
-    public List<SkillStatsDTO> getSkillStats(List<String> slugs) {
-        if (slugs == null || slugs.isEmpty()) {
-            return List.of();
+    public
+    java.util.List<dat.dtos.SkillStatsDTO>
+    getSkillStats(
+            java.util.List<java.lang.String> slugs
+    )   throws dat.exceptions.ApiException {
+        if (
+                slugs == null   ||
+                slugs.isEmpty()
+        ) {
+            throw new dat.exceptions.ApiException(
+                    502,
+                    "It is NOT allowed to pass an empty or null parameter (java.util.Set<java.lang.String>)\nSkillStatsService.getSkillStats(java.util.Set<java.lang.String>)");
         }
 
         try {
             String slugParams = slugs.stream()
-                    .map(slug -> "slug=" + slug)
-                    .collect(Collectors.joining("&"));
+                    .map(
+                            slug -> "slug=" + slug
+                    ).collect(
+                            java.util.stream.Collectors.joining(
+                                    "&"
+                            )
+                    );
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(API_URL + "?" + slugParams))
-                    .GET()
-                    .build();
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                    .uri(
+                            java.net.URI.create(
+                                    API_URL + "?" + slugParams
+                            )
+                    ).GET().build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            java.net.http.HttpResponse<java.lang.String> response = client.send(
+                    request,
+                    java.net.http.HttpResponse.BodyHandlers.ofString()
+            );
 
-            if (response.statusCode() == 200) {
-                Map<String, Object> responseMap = objectMapper.readValue(response.body(), Map.class);
-                List<Map<String, Object>> dataList = (List<Map<String, Object>>) responseMap.get("data");
+            if (
+                    response.statusCode() == 200
+            ) {
+                java.util.Map<java.lang.String, java.lang.Object> responseMap = objectMapper.readValue(
+                        response.body(),
+                        java.util.Map.class
+                );
 
-                List<SkillStatsDTO> stats = new ArrayList<>();
-                for (Map<String, Object> data : dataList) {
-                    SkillStatsDTO dto = objectMapper.convertValue(data, SkillStatsDTO.class);
+                java.util.List<java.util.Map<java.lang.String, java.lang.Object>> dataList = (java.util.List<java.util.Map<java.lang.String, java.lang.Object>>) responseMap.get(
+                        "data"
+                );
+
+                java.util.List<dat.dtos.SkillStatsDTO> stats = new java.util.ArrayList<>();
+                for (
+                        java.util.Map<java.lang.String, java.lang.Object> data : dataList
+                ) {
+                    dat.dtos.SkillStatsDTO dto = objectMapper.convertValue(
+                            data,
+                            dat.dtos.SkillStatsDTO.class
+                    );
                     stats.add(dto);
                 }
                 return stats;
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (java.io.IOException | InterruptedException e) {
             System.err.println("Failed to fetch skill stats: " + e.getMessage());
         }
-        return List.of();
+        throw new dat.exceptions.ApiException(
+                502,
+                "An error happen while receiving http response. The method [client.send( java.net.http.HttpRequest request, " +
+                        "java.net.http.HttpResponse.BodyHandler)] failed since it did not receive status code 200"
+        );
     }
 
-    public List<Skill> enrichSkills(java.util.Set<Skill> skills) {
-        if (skills == null || skills.isEmpty()) {
-            return List.of();
+    public
+    java.util.List<dat.entities.Skill>
+    enrichSkills(
+            java.util.Set<dat.entities.Skill> skills
+    ) throws dat.exceptions.ApiException {
+        if (
+                skills == null  ||
+                skills.isEmpty()
+        ) {
+            throw new dat.exceptions.ApiException(
+                    502,
+                    "It is NOT allowed to pass an empty or null parameter (java.util.Set<dat.entities.Skill>)\nSkillStatsService.enrichSkills(java.util.Set<Skill>)");
         }
 
-        List<String> slugs = skills.stream()
-                .map(Skill::getSlug)
-                .collect(Collectors.toList());
+        java.util.List<java.lang.String> slugs = skills.stream()
+                .map(
+                        dat.entities.Skill::getSlug
+                ).collect(
+                        java.util.stream.Collectors.toList()
+                );
 
-        List<SkillStatsDTO> stats = getSkillStats(slugs);
-        Map<String, SkillStatsDTO> statsBySlug = stats.stream()
-                .collect(Collectors.toMap(SkillStatsDTO::slug, dto -> dto));
+        java.util.List<dat.dtos.SkillStatsDTO> stats = getSkillStats(
+                slugs
+        );
 
-        List<Skill> enrichedSkills = new ArrayList<>();
-        for (Skill skill : skills) {
-            SkillStatsDTO statsDTO = statsBySlug.get(skill.getSlug());
-            if (statsDTO != null) {
-                skill.setPopularityScore(statsDTO.popularityScore() != null ?
-                        statsDTO.popularityScore().longValue() : null);
-                skill.setAverageSalary(statsDTO.averageSalary() != null ?
-                        statsDTO.averageSalary().longValue() : null);
+        java.util.Map<java.lang.String, dat.dtos.SkillStatsDTO> statsBySlug = stats.stream()
+                .collect(
+                        java.util.stream.Collectors.toMap(
+                                dat.dtos.SkillStatsDTO::slug,
+                                dto -> dto)
+                );
+
+        java.util.List<dat.entities.Skill> enrichedSkills = new java.util.ArrayList<>();
+        for (dat.entities.Skill skill : skills) {
+            dat.dtos.SkillStatsDTO statsDTO = statsBySlug.get(
+                    skill.getSlug()
+            );
+
+            if (
+                    statsDTO != null
+            ) {
+                skill.setPopularityScore(
+                        statsDTO.popularityScore() != null      ?
+                        statsDTO.popularityScore().longValue()  :
+                        null
+                );
+
+                skill.setAverageSalary(
+                        statsDTO.averageSalary() != null        ?
+                        statsDTO.averageSalary().longValue()    :
+                        null
+                );
             }
-            enrichedSkills.add(skill);
+
+            enrichedSkills.add(
+                    skill
+            );
         }
         return enrichedSkills;
     }

@@ -68,7 +68,8 @@ CandidateDAOTest
                     "12345678",
                     "Computer Science",
                     java.util.Set.of(
-                            new dat.entities.Skill(
+                            new dat.dtos.SkillDTO(
+                                    null,
                                     "Java",
                                     "java",
                                     dat.entities.SkillCategory.DEVOPS,
@@ -113,12 +114,13 @@ CandidateDAOTest
                     "Jane Smith",
                     "87654321",
                     "Engineering",
-                    new java.util.HashSet<>(
-                            dat.config.Populate.getSkills().stream().filter(
-                                    x ->  x.getName().equals("cpp")
-                                            ||  x.getSlug().equals("docker")
-                            ).collect(
-                                    java.util.stream.Collectors.toSet()
+                    java.util.Set.of(
+                            new dat.dtos.SkillDTO(
+                                    null,
+                                    "React",
+                                    "react",
+                                    dat.entities.SkillCategory.FRONTEND,
+                                    "JavaScript UI library"
                             )
                     )
             );
@@ -159,12 +161,13 @@ CandidateDAOTest
                     "Bob Jones",
                     "11223344",
                     "Mathematics",
-                    new java.util.HashSet<>(
-                            dat.config.Populate.getSkills().stream().filter(
-                                    x ->  x.getName().equals("cpp")
-                                            ||  x.getSlug().equals("docker")
-                            ).collect(
-                                    java.util.stream.Collectors.toSet()
+                    java.util.Set.of(
+                            new dat.dtos.SkillDTO(
+                                    null,
+                                    "TensorFlow",
+                                    "tensorflow",
+                                    dat.entities.SkillCategory.DATA,
+                                    "Data science and analytics tool"
                             )
                     )
             );
@@ -180,12 +183,13 @@ CandidateDAOTest
                             "Jones Robert",
                             "44332211",
                             "Mathematics",
-                            new java.util.HashSet<>(
-                                    dat.config.Populate.getSkills().stream().filter(
-                                            x ->  x.getName().equals("cpp")
-                                                    ||  x.getSlug().equals("docker")
-                                    ).collect(
-                                            java.util.stream.Collectors.toSet()
+                            java.util.Set.of(
+                                    new dat.dtos.SkillDTO(
+                                            null,
+                                            "Docker",
+                                            "docker",
+                                            dat.entities.SkillCategory.DEVOPS,
+                                            "Container platform"
                                     )
                             )
                     )
@@ -278,12 +282,13 @@ CandidateDAOTest
                     "Alice Brown",
                     "55667788",
                     "Physics",
-                    new java.util.HashSet<>(
-                            dat.config.Populate.getSkills().stream().filter(
-                                    x ->  x.getName().equals("cpp")
-                                            ||  x.getSlug().equals("docker")
-                            ).collect(
-                                    java.util.stream.Collectors.toSet()
+                    java.util.Set.of(
+                            new dat.dtos.SkillDTO(
+                                    null,
+                                    "C++",
+                                    "cpp",
+                                    dat.entities.SkillCategory.PROG_LANG,
+                                    "The first and BESt Object Oriented Programming language"
                             )
                     )
             );
@@ -314,12 +319,13 @@ CandidateDAOTest
                             "Candidate 1",
                             "111",
                             "CS",
-                            new java.util.HashSet<>(
-                                    dat.config.Populate.getSkills().stream().filter(
-                                            x ->  x.getName().equals("cpp")
-                                                    ||  x.getSlug().equals("docker")
-                                    ).collect(
-                                            java.util.stream.Collectors.toSet()
+                            java.util.Set.of(
+                                    new dat.dtos.SkillDTO(
+                                            null,
+                                            "Java",
+                                            "java",
+                                            dat.entities.SkillCategory.PROG_LANG,
+                                            "General-purpose programming language"
                                     )
                             )
                     )
@@ -331,12 +337,13 @@ CandidateDAOTest
                             "Candidate 2",
                             "222",
                             "Math",
-                            new java.util.HashSet<>(
-                                    dat.config.Populate.getSkills().stream().filter(
-                                            x ->  x.getName().equals("cpp")
-                                                    ||  x.getSlug().equals("docker")
-                                    ).collect(
-                                            java.util.stream.Collectors.toSet()
+                            java.util.Set.of(
+                                    new dat.dtos.SkillDTO(
+                                            null,
+                                            "Spring Boot",
+                                            "spring-boot",
+                                            dat.entities.SkillCategory.FRAMEWORK,
+                                            "Java framework for microservices"
                                     )
                             )
                     )
@@ -381,12 +388,13 @@ CandidateDAOTest
                             "Developer",
                             "99999",
                             "IT",
-                            new java.util.HashSet<>(
-                                    dat.config.Populate.getSkills().stream().filter(
-                                            x ->  x.getName().equals("cpp")
-                                                    ||  x.getSlug().equals("docker")
-                                    ).collect(
-                                            java.util.stream.Collectors.toSet()
+                            java.util.Set.of(
+                                    new dat.dtos.SkillDTO(
+                                            null,
+                                            "PostgreSQL",
+                                            "postgresql",
+                                            dat.entities.SkillCategory.DB,
+                                            "Relational database system"
                                     )
                             )
                     )

@@ -2,13 +2,15 @@ package dat.entities;
 @lombok.Getter
 @jakarta.persistence.Table( name = "skill")
 @jakarta.persistence.Entity
-public class Skill
+public
+class
+Skill
 {
     @jakarta.persistence.Id
     @jakarta.persistence.GeneratedValue(
             strategy = jakarta.persistence.GenerationType.IDENTITY
     )
-    private Long id;
+    private java.lang.Long id;
 
     @lombok.Setter
     @jakarta.persistence.Enumerated(
@@ -17,16 +19,16 @@ public class Skill
     @jakarta.persistence.Column(
             name = "category"
     )
-    private SkillCategory category;
+    private dat.entities.SkillCategory category;
 
     @lombok.Setter
-    private String name;
+    private java.lang.String name;
 
     @lombok.Setter
-    private String description;
+    private java.lang.String description;
 
     @lombok.Setter
-    private String slug;
+    private java.lang.String slug;
 
     @jakarta.persistence.ManyToMany(
             mappedBy = "skills",
@@ -36,12 +38,10 @@ public class Skill
 
 
     @lombok.Setter
-    @jakarta.persistence.Transient // Not persisted to database
-    private Long popularityScore;
+    private java.lang.Long popularityScore;
 
     @lombok.Setter
-    @jakarta.persistence.Transient  // Not persisted to database
-    private Long averageSalary;
+    private java.lang.Long averageSalary;
 
     protected Skill (){}    // Required by JPA & Jackson
 
