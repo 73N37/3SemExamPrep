@@ -1,19 +1,15 @@
 package dat.entities;
 
-import dat.dtos.CandidateDTO;
-import jakarta.persistence.*;
-
-import java.util.HashSet;
-import java.util.Set;
-
 @lombok.Getter
-@Entity
-@Table(name = "candidates")
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(name = "candidates")
 public
 class
 Candidate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @jakarta.persistence.Id
+    @jakarta.persistence.GeneratedValue(
+            strategy = jakarta.persistence.GenerationType.IDENTITY
+    )
     private Long id;
 
     @lombok.Setter
@@ -28,15 +24,21 @@ Candidate {
 
     private double AveragePopularityScore;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "candidate_skill",
-            joinColumns = @JoinColumn(name = "candidate_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    @jakarta.persistence.ManyToMany(
+            fetch = jakarta.persistence.FetchType.EAGER
     )
-    private Set<Skill> skills = new HashSet<>();
+    @jakarta.persistence.JoinTable(
+            name = "candidate_skill",
+            joinColumns = @jakarta.persistence.JoinColumn(
+                    name = "candidate_id"
+            ),
+            inverseJoinColumns = @jakarta.persistence.JoinColumn(
+                    name = "skill_id"
+            )
+    )
+    private java.util.Set<Skill> skills = new java.util.HashSet<>();
 
-    protected Candidate(){}
+    protected Candidate(){} // Required by JPA & Jackson
 
     public
     Candidate
@@ -58,7 +60,7 @@ Candidate {
     public
     Candidate
             (
-                    CandidateDTO dto
+                    dat.dtos.CandidateDTO dto
             )
     {
         if (dto.getId() != null) this.id = dto.getId();

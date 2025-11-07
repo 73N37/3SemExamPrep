@@ -298,34 +298,29 @@ CandidateDAO
         }
     }
 
-    public dat.dtos.CandidateDTO getTopCandidateByPopularity() {
-        try (jakarta.persistence.EntityManager em = emf.createEntityManager()) {
-            jakarta.persistence.TypedQuery<dat.entities.Candidate> query = em.createQuery(
-                    "SELECT c FROM dat.entities.Candidate c LEFT JOIN c.skills s " +
-                            "GROUP BY c.id ORDER BY AVG(s.popularityScore) DESC",
-                    dat.entities.Candidate.class
-            );
-            query.setMaxResults(1);
-            java.util.List<dat.entities.Candidate> results = query.getResultList();
-
-            if (results.isEmpty()) return null;
-
-            dat.entities.Candidate candidate = results.get(0);
-            double avgPopularity = candidate.getSkills().stream()
-                    .mapToLong(dat.entities.Skill::getPopularityScore)
-                    .average()
-                    .orElse(0.0);
-
-            return new dat.dtos.CandidateDTO(
-                    candidate.getId(),
-                    candidate.getName(),
-                    candidate.getPhone(),
-                    candidate.getEducation(),
-                    candidate.getSkills(),
-                    avgPopularity
-            );
-        }
-    }
+//    public dat.dtos.CandidateDTO getTopCandidateByPopularity() {
+//        try (jakarta.persistence.EntityManager em = emf.createEntityManager()) {
+//            jakarta.persistence.TypedQuery<dat.entities.Candidate> query = em.createQuery(
+//                    "SELECT c FROM dat.entities.Candidate c LEFT JOIN c.skills s " +
+//                            "GROUP BY c.id ORDER BY AVG(s.popularityScore) DESC",
+//                    dat.entities.Candidate.class
+//            );
+//            query.setMaxResults(1);
+//            java.util.List<dat.entities.Candidate> results = query.getResultList();
+//
+//            if (results.isEmpty()) return null;
+//
+//            dat.entities.Candidate candidate = results.get(0);
+//            double avgPopularity = candidate.getSkills().stream()
+//                    .mapToLong(dat.entities.Skill::getPopularityScore)
+//                    .average()
+//                    .orElse(0.0);
+//
+//            return new dat.dtos.CandidateDTO(
+//                    candidate
+//            );
+//        }
+//    }
 
     public boolean validateSkillId(Long id) {
         return SkillDAO.getInstance(dat.config.HibernateConfig.getEntityManagerFactory()).validatePrimaryKey(id);

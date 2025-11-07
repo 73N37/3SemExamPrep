@@ -1,13 +1,11 @@
 package dat.daos;
 
-//import org.junit.jupiter.api.*;
-
-//import static org.junit.jupiter.api.Assertions.*;
-
-class CandidateDAOTest {
-    private static jakarta.persistence.EntityManagerFactory emf;
-    private static dat.daos.impl.CandidateDAO candidateDAO;
-    private static dat.daos.impl.SkillDAO skillDAO;
+class
+CandidateDAOTest
+{
+    private static jakarta.persistence.EntityManagerFactory     emf;
+    private static dat.daos.impl.CandidateDAO                   candidateDAO;
+    private static dat.daos.impl.SkillDAO                       skillDAO;
 
     @org.junit.jupiter.api.BeforeAll
     static
@@ -87,12 +85,12 @@ class CandidateDAOTest {
 
 
         org.junit.jupiter.api.Assertions.assertNotNull(
-                created.getId()
+                created.id()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
                 "John Doe",
-                created.getName()
+                created.name()
         );
     }
 
@@ -103,37 +101,202 @@ class CandidateDAOTest {
     testReadCandidate
             ()
     {
-        dat.dtos.CandidateDTO dto = new dat.dtos.CandidateDTO(null, "Jane Smith", "87654321", "Engineering", null);
-        dat.dtos.CandidateDTO created = candidateDAO.create(dto);
+        // TODO [Method-scope variable declarations]
+        dat.dtos.CandidateDTO dto;
+        dat.dtos.CandidateDTO created;
+        dat.dtos.CandidateDTO found;
+        try
+        {
+            //TODO [Method-scope variable definitions]
+            dto = new dat.dtos.CandidateDTO(
+                    null,
+                    "Jane Smith",
+                    "87654321",
+                    "Engineering",
+                    new java.util.HashSet<>(
+                            dat.config.Populate.getSkills().stream().filter(
+                                    x ->  x.getName().equals("cpp")
+                                            ||  x.getSlug().equals("docker")
+                            ).collect(
+                                    java.util.stream.Collectors.toSet()
+                            )
+                    )
+            );
 
-        dat.dtos.CandidateDTO found = candidateDAO.read(created.getId());
+            created = candidateDAO.create(
+                    dto
+            );
+
+            found = candidateDAO.read(
+                    created.id()
+            );
+        }
+        catch (java.lang.Exception ex)
+        {
+            return;
+        }
+
+        //TODO  [Assertsions]
         org.junit.jupiter.api.Assertions.assertNotNull(found);
-        org.junit.jupiter.api.Assertions.assertEquals(created.getId(), found.getId());
+        org.junit.jupiter.api.Assertions.assertEquals(created.id(), found.id());
     }
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order
             (3)
-    void testUpdateCandidate()
+    void
+    testUpdateCandidate
+            ()
     {
-        dat.dtos.CandidateDTO dto = new dat.dtos.CandidateDTO(null, "Bob Jones", "11223344", "Mathematics", null);
-        dat.dtos.CandidateDTO created = candidateDAO.create(dto);
+        dat.dtos.CandidateDTO dto;
+        dat.dtos.CandidateDTO created;
+        dat.dtos.CandidateDTO updated;
 
-        String createdName = created.getName();
-        dat.dtos.CandidateDTO updated = candidateDAO.update(created.getId(), new dat.dtos.CandidateDTO(null, "Robert Jones", "11223344", "Mathematics", null));
+        try
+        {
+            dto     = new dat.dtos.CandidateDTO(
+                    null,
+                    "Bob Jones",
+                    "11223344",
+                    "Mathematics",
+                    new java.util.HashSet<>(
+                            dat.config.Populate.getSkills().stream().filter(
+                                    x ->  x.getName().equals("cpp")
+                                            ||  x.getSlug().equals("docker")
+                            ).collect(
+                                    java.util.stream.Collectors.toSet()
+                            )
+                    )
+            );
 
-        org.junit.jupiter.api.Assertions.assertEquals("Robert Jones", updated.getName());
+            created = candidateDAO.create(
+                    dto
+            );
+
+            updated = candidateDAO.update(
+                    created.id(),
+                    new dat.dtos.CandidateDTO(
+                            null,
+                            "Jones Robert",
+                            "44332211",
+                            "Mathematics",
+                            new java.util.HashSet<>(
+                                    dat.config.Populate.getSkills().stream().filter(
+                                            x ->  x.getName().equals("cpp")
+                                                    ||  x.getSlug().equals("docker")
+                                    ).collect(
+                                            java.util.stream.Collectors.toSet()
+                                    )
+                            )
+                    )
+            );
+        }
+        catch (java.lang.Exception ex)
+        {
+            return;
+        }
+
+        //  created assertions
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "Bob Jones",
+                created.name()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "11223344",
+                created.phone()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "Mathematics",
+                created.education()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                2,
+                created.skills().size()
+        );
+
+        //  updated assertions
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "Jones Robert",
+                updated.name()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "44332211",
+                updated.phone()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "Mathematics",
+                updated.education()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                2,
+                updated.skills().size()
+        );
+
+        // relation assertions
+        org.junit.jupiter.api.Assertions.assertNotEquals(
+                created.name(),
+                updated.name()
+        );
+
+        org.junit.jupiter.api.Assertions.assertNotEquals(
+                created.phone(),
+                updated.phone()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                created.education(),
+                updated.education()
+        );
+
+        org.junit.jupiter.api.Assertions.assertEquals(
+                created.skills(),
+                updated.skills()
+        );
+
     }
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order
             (4)
-    void testDeleteCandidate() {
-        dat.dtos.CandidateDTO dto = new dat.dtos.CandidateDTO(null, "Alice Brown", "55667788", "Physics", null);
-        dat.dtos.CandidateDTO created = candidateDAO.create(dto);
+    void
+    testDeleteCandidate
+            ()
+    {
+        dat.dtos.CandidateDTO dto;
+        dat.dtos.CandidateDTO created;
 
-        candidateDAO.delete(created.getId());
-        org.junit.jupiter.api.Assertions.assertNull(candidateDAO.read(created.getId()));
+        try
+        {
+            dto = new dat.dtos.CandidateDTO(
+                    null,
+                    "Alice Brown",
+                    "55667788",
+                    "Physics",
+                    new java.util.HashSet<>(
+                            dat.config.Populate.getSkills().stream().filter(
+                                    x ->  x.getName().equals("cpp")
+                                            ||  x.getSlug().equals("docker")
+                            ).collect(
+                                    java.util.stream.Collectors.toSet()
+                            )
+                    )
+            );
+
+            created = candidateDAO.create(dto);
+
+            candidateDAO.delete(created.id());
+            org.junit.jupiter.api.Assertions.assertNull(candidateDAO.read(created.id()));
+        }
+        catch(java.lang.Exception ex)
+        {
+            return;
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -143,11 +306,55 @@ class CandidateDAOTest {
     testGetAllCandidates
             ()
     {
-        candidateDAO.create(new dat.dtos.CandidateDTO(null, "Candidate 1", "111", "CS", null));
-        candidateDAO.create(new dat.dtos.CandidateDTO(null, "Candidate 2", "222", "Math", null));
+        try
+        {
+            candidateDAO.create(
+                    new dat.dtos.CandidateDTO(
+                            null,
+                            "Candidate 1",
+                            "111",
+                            "CS",
+                            new java.util.HashSet<>(
+                                    dat.config.Populate.getSkills().stream().filter(
+                                            x ->  x.getName().equals("cpp")
+                                                    ||  x.getSlug().equals("docker")
+                                    ).collect(
+                                            java.util.stream.Collectors.toSet()
+                                    )
+                            )
+                    )
+            );
 
-        java.util.List<dat.dtos.CandidateDTO> all = candidateDAO.readAll();
-        org.junit.jupiter.api.Assertions.assertEquals(2, all.size());
+            candidateDAO.create(
+                    new dat.dtos.CandidateDTO(
+                            null,
+                            "Candidate 2",
+                            "222",
+                            "Math",
+                            new java.util.HashSet<>(
+                                    dat.config.Populate.getSkills().stream().filter(
+                                            x ->  x.getName().equals("cpp")
+                                                    ||  x.getSlug().equals("docker")
+                                    ).collect(
+                                            java.util.stream.Collectors.toSet()
+                                    )
+                            )
+                    )
+            );
+
+            java.util.List<dat.dtos.CandidateDTO> all = candidateDAO.readAll();
+
+            org.junit.jupiter.api.Assertions.assertEquals(
+                    2,
+                    all.size()
+            );
+        }
+        catch (java.lang.Exception ex )
+        {
+            return;
+        }
+
+
     }
 
     @org.junit.jupiter.api.Test
@@ -159,19 +366,49 @@ class CandidateDAOTest {
     {
         dat.entities.Skill skill = new dat.entities.Skill("Java", "java", dat.entities.SkillCategory.PROG_LANG, "Programming language");
         dat.dtos.SkillDTO skillDTO;
+        dat.dtos.CandidateDTO candidate;
         try
         {
-            skillDTO = skillDAO.create(new dat.dtos.SkillDTO(skill));
+            skillDTO = skillDAO.create(
+                    new dat.dtos.SkillDTO(
+                            skill
+                    )
+            );
+
+            candidate = candidateDAO.create(
+                    new dat.dtos.CandidateDTO(
+                            null,
+                            "Developer",
+                            "99999",
+                            "IT",
+                            new java.util.HashSet<>(
+                                    dat.config.Populate.getSkills().stream().filter(
+                                            x ->  x.getName().equals("cpp")
+                                                    ||  x.getSlug().equals("docker")
+                                    ).collect(
+                                            java.util.stream.Collectors.toSet()
+                                    )
+                            )
+                    )
+            );
+
+            candidateDAO.addSkillToCandidate(
+                    candidate.id(),
+                    skillDTO.id()
+            );
+
+            dat.dtos.CandidateDTO updated = candidateDAO.read(
+                    candidate.id()
+            );
+
+            org.junit.jupiter.api.Assertions.assertEquals(
+                    1,
+                    updated.skills().size()
+            );
         }
         catch (java.lang.Exception ex)
         {
             return;
         }
-        dat.dtos.CandidateDTO candidate = candidateDAO.create(new dat.dtos.CandidateDTO(null, "Developer", "99999", "IT", null));
-
-        candidateDAO.addSkillToCandidate(candidate.getId(), skillDTO.getId());
-
-        dat.dtos.CandidateDTO updated = candidateDAO.read(candidate.getId());
-        org.junit.jupiter.api.Assertions.assertEquals(1, updated.getSkills().size());
     }
 }

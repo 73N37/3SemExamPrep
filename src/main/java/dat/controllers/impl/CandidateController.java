@@ -175,11 +175,11 @@ CandidateController
         return ctx.bodyValidator(
                 dat.dtos.CandidateDTO.class
                 ).check(
-                        c -> c.getName() != null && !c.getName().isEmpty(),
+                        c -> c.name() != null && !c.name().isEmpty(),
                         "Name must be set").check(
-                                c -> c.getPhone() != null && !c.getPhone().isEmpty(),
+                                c -> c.phone() != null && !c.phone().isEmpty(),
                                 "Phone must be set").check(
-                                        c -> c.getEducation() != null && !c.getEducation().isEmpty(),
+                                        c -> c.education() != null && !c.education().isEmpty(),
                                         "Education must be set").get();
     }
 
@@ -202,8 +202,11 @@ CandidateController
                 "skillId",
                 java.lang.Long.class
                 ).check(
-                        id -> dao.validateSkillId(id),
-                        "Not a valid skill id").get();
+                        id -> dao.validateSkillId(
+                                id
+                        ),
+                        "Not a valid skill id"
+                ).get();
 
         dat.dtos.CandidateDTO candidateDTO = dao.addSkillToCandidate(
                 candidateId,

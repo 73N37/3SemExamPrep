@@ -1,6 +1,8 @@
 package dat.entities;
 
-public enum SkillCategory
+public
+enum
+SkillCategory
 {
     PROG_LANG,
     DB,

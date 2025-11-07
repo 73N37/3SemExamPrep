@@ -43,7 +43,7 @@ public class Skill
     @jakarta.persistence.Transient  // Not persisted to database
     private Long averageSalary;
 
-    public Skill (){}    // Required by JPA & Jackson
+    protected Skill (){}    // Required by JPA & Jackson
 
     public
     Skill
