@@ -104,22 +104,22 @@ class SkillDAOTest
 
         //TODO [Assertions]
         org.junit.jupiter.api.Assertions.assertNotNull(
-                created.getId()
+                created.id()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
                 "Java",
-                created.getName()
+                created.name()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
                 "java",
-                created.getSlug()
+                created.slug()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
                 dat.entities.SkillCategory.PROG_LANG,
-                created.getCategory()
+                created.category()
         );
     }
 
@@ -154,7 +154,7 @@ class SkillDAOTest
             );
             
             found   = skillDAO.read(
-                    created.getId()
+                    created.id()
             );
         }
         catch (java.lang.Exception ex)
@@ -168,18 +168,18 @@ class SkillDAOTest
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
-                created.getId(),
-                found.getId()
+                created.id(),
+                found.id()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
-                created.getName(),
-                found.getName()
+                created.name(),
+                found.name()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
-                created.getCategory(),
-                found.getCategory()
+                created.category(),
+                found.category()
         );
     }
 
@@ -215,7 +215,7 @@ class SkillDAOTest
             );
             
             updateDTO   = new dat.dtos.SkillDTO(
-                    created.getId(),
+                    created.id(),
                     "PostgreSQL Advanced",
                     "postgresql",
                     skill.getCategory(),
@@ -223,7 +223,7 @@ class SkillDAOTest
             );
             
             updated     = skillDAO.update(
-                    created.getId(),
+                    created.id(),
                     updateDTO
             );
         }
@@ -236,71 +236,71 @@ class SkillDAOTest
         // created assertions
         org.junit.jupiter.api.Assertions.assertEquals(
                 "PostgreSQL",
-                created.getName()
+                created.name()
         );
         
         org.junit.jupiter.api.Assertions.assertEquals(
                 "postgresql",
-                created.getSlug()
+                created.slug()
         );
         
         org.junit.jupiter.api.Assertions.assertEquals(
                 dat.entities.SkillCategory.DB,
-                created.getCategory()
+                created.category()
         );
         
         org.junit.jupiter.api.Assertions.assertEquals(
                 "Database",
-                created.getDescription()
+                created.description()
         );
 
 
         //updated assertions
         org.junit.jupiter.api.Assertions.assertEquals(
                 "PostgreSQL Advanced",
-                updated.getName()
+                updated.name()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
                 "postgresql",
-                updated.getSlug()
+                updated.slug()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
                 dat.entities.SkillCategory.DB,
-                updated.getCategory()
+                updated.category()
         );
         
         org.junit.jupiter.api.Assertions.assertEquals(
                 "Advanced database management",
-                updated.getDescription()
+                updated.description()
         );
 
 
         //relation assertions
         org.junit.jupiter.api.Assertions.assertEquals(
-                created.getId(),
-                updated.getId()
+                created.id(),
+                updated.id()
         );
 
         org.junit.jupiter.api.Assertions.assertNotEquals(
-                created.getName(),
-                updated.getName()
+                created.name(),
+                updated.name()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
-                created.getSlug(),
-                updated.getSlug()
+                created.slug(),
+                updated.slug()
         );
 
         org.junit.jupiter.api.Assertions.assertEquals(
-                created.getCategory(),
-                updated.getCategory()
+                created.category(),
+                updated.category()
         );
 
         org.junit.jupiter.api.Assertions.assertNotEquals(
-                created.getDescription(),
-                updated.getDescription()
+                created.description(),
+                updated.description()
         );
     }
 
@@ -334,12 +334,12 @@ class SkillDAOTest
 
             //TODO Actual test
             skillDAO.delete(
-                    created.getId()
+                    created.id()
             );
             // Should return null since the entry with 'created.getId()' should be deleted
             org.junit.jupiter.api.Assertions.assertNull(
                     skillDAO.read(
-                            created.getId()
+                            created.id()
                     )
             );
         }
@@ -455,7 +455,7 @@ class SkillDAOTest
 
             org.junit.jupiter.api.Assertions.assertTrue(
                     progLangSkills.stream().allMatch(
-                            s -> s.getCategory() == dat.entities.SkillCategory.PROG_LANG
+                            s -> s.category() == dat.entities.SkillCategory.PROG_LANG
                     )
             );
         }
@@ -499,14 +499,14 @@ class SkillDAOTest
                     "Spring Boot",
                     found.get(
                             0
-                    ).getName()
+                    ).name()
             );
 
             org.junit.jupiter.api.Assertions.assertEquals(
-                    created.getId(),
+                    created.id(),
                     found.get(
                             0
-                    ).getId()
+                    ).id()
             );
         }
         catch (java.lang.Exception ex)

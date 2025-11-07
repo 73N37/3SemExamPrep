@@ -73,16 +73,16 @@ public class SkillStatsService {
 
         List<SkillStatsDTO> stats = getSkillStats(slugs);
         Map<String, SkillStatsDTO> statsBySlug = stats.stream()
-                .collect(Collectors.toMap(SkillStatsDTO::getSlug, dto -> dto));
+                .collect(Collectors.toMap(SkillStatsDTO::slug, dto -> dto));
 
         List<Skill> enrichedSkills = new ArrayList<>();
         for (Skill skill : skills) {
             SkillStatsDTO statsDTO = statsBySlug.get(skill.getSlug());
             if (statsDTO != null) {
-                skill.setPopularityScore(statsDTO.getPopularityScore() != null ?
-                        statsDTO.getPopularityScore().longValue() : null);
-                skill.setAverageSalary(statsDTO.getAverageSalary() != null ?
-                        statsDTO.getAverageSalary().longValue() : null);
+                skill.setPopularityScore(statsDTO.popularityScore() != null ?
+                        statsDTO.popularityScore().longValue() : null);
+                skill.setAverageSalary(statsDTO.averageSalary() != null ?
+                        statsDTO.averageSalary().longValue() : null);
             }
             enrichedSkills.add(skill);
         }

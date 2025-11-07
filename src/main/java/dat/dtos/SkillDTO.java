@@ -1,68 +1,53 @@
 package dat.dtos;
 
-import dat.entities.Candidate;
-import dat.entities.Skill;
-import dat.entities.SkillCategory;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToMany;
+public
+record
+SkillDTO(
+                java.lang.Long                  id,
 
-import java.util.HashSet;
-import java.util.Set;
+        @org.jetbrains.annotations.NotNull
+                java.lang.String                name,
 
-@lombok.Getter
-public class SkillDTO
+        @org.jetbrains.annotations.NotNull
+                java.lang.String                slug,
+
+        @jakarta.persistence.Enumerated(
+                jakarta.persistence.EnumType.STRING
+        )
+                dat.entities.SkillCategory      category,
+
+        @org.jetbrains.annotations.NotNull
+                java.lang.String                description
+)
 {
-    private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private SkillCategory category;
-
-    private String name;
-
-    private String description;
-
-    private String slug;
-
-
-    public SkillDTO () {}   // Required by Jackson
-
+    // Required by Jackson
     public
     SkillDTO
-            (
-                    java.lang.Long id,
-
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.String name,
-
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.String slug,
-
-                    @org.jetbrains.annotations.NotNull
-                    SkillCategory category,
-
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.String description
-            )
+    ()
     {
-        this.id = id;
-        this.name = name;
-        this.slug = slug;
-        this.category = category;
-        this.description = description;
+        this(
+                null,
+                "",
+                "",
+                null,
+                ""
+        );
     }
 
     public
     SkillDTO
             (
                     @org.jetbrains.annotations.NotNull
-                    Skill entity
+                    dat.entities.Skill entity
             )
     {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.description = entity.getDescription();
-        this.slug = entity.getSlug();
-        this.category = entity.getCategory();
+        this(
+                entity.getId(),
+                entity.getName(),
+                entity.getSlug(),
+                entity.getCategory(),
+                entity.getDescription()
+        );
+
     }
 }
