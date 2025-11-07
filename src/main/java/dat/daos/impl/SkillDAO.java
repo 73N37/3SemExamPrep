@@ -192,7 +192,7 @@ SkillDAO
                 );
 
         return all.stream()
-                .filter(index -> slug == null ? index.getSlug() == null : slug.equals(index.getSlug()))
+                .filter(index -> slug == null ? index.slug() == null : slug.equals(index.slug()))
                 .toList();
     }
 
@@ -282,22 +282,22 @@ SkillDAO
             {
                 skill.setName
                         (
-                                skillDTO.getName()
+                                skillDTO.name()
                         );
 
                 skill.setCategory
                         (
-                                skillDTO.getCategory()
+                                skillDTO.category()
                         );
 
                 skill.setDescription
                         (
-                                skillDTO.getDescription()
+                                skillDTO.description()
                         );
 
                 skill.setSlug
                         (
-                                skillDTO.getSlug()
+                                skillDTO.slug()
                         );
 
                 dat.entities.Skill mergedSkill = em.merge

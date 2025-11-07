@@ -76,12 +76,12 @@ public class Skill
             )
     {
         if (
-                dto.getId() != null
-        ) this.id           = dto.getId();
-        this.name           = dto.getName();
-        this.slug           = dto.getSlug();
-        this.description    = dto.getDescription();
-        this.category       = dto.getCategory();
+                dto.id() != null
+        ) this.id           = dto.id();
+        this.name           = dto.name();
+        this.slug           = dto.slug();
+        this.description    = dto.description();
+        this.category       = dto.category();
     }
 
     public
