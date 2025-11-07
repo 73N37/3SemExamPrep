@@ -63,11 +63,17 @@ Candidate {
                     dat.dtos.CandidateDTO dto
             )
     {
-        if (dto.getId() != null) this.id = dto.getId();
-        this.name = dto.getName();
-        this.phone = dto.getPhone();
-        this.education = dto.getEducation();
-        this.skills = dto.getSkills();
+        if (
+                dto.id() != null
+        ) this.id = dto.id();
+
+        this.name = dto.name();
+
+        this.phone = dto.phone();
+
+        this.education = dto.education();
+
+        this.skills = dto.skills();
     }
 
     public

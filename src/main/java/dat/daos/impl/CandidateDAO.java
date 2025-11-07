@@ -66,7 +66,7 @@ CandidateDAO
                     dat.dtos.CandidateDTO dto
             )
     {
-        skillStatsService.enrichSkills(dto.getSkills());
+        skillStatsService.enrichSkills(dto.skills());
         // The skills in dto are already updated by reference since enrichSkills modifies them
     }
 
@@ -142,15 +142,15 @@ CandidateDAO
             )
             {
                 candidate.setName(
-                        candidateDTO.getName()
+                        candidateDTO.name()
                 );
 
                 candidate.setPhone(
-                        candidateDTO.getPhone()
+                        candidateDTO.phone()
                 );
 
                 candidate.setEducation(
-                        candidateDTO.getEducation()
+                        candidateDTO.education()
                 );
 
                 dat.entities.Candidate mergedCandidate = em.merge(

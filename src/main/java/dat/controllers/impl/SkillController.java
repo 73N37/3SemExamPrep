@@ -250,9 +250,10 @@ SkillController
         return ctx.bodyValidator
                         (
                                 dat.dtos.SkillDTO.class
-                        ).check(s -> s.getName()        != null && !s.getName().isEmpty(), "Skill name must be set")
-                         .check(s -> s.getCategory()    != null, "Skill category must be set")
-                         .check(s -> s.getDescription() != null && !s.getDescription().isEmpty(), "Skill description must be set")
+                        ).check(s -> s.name()        != null, "Skill name must be set")
+                         .check(s -> s.slug()        != null, "Skill slug must be set")
+                         .check(s -> s.category()    != null, "Skill category must be set")
+                         .check(s -> s.description() != null, "Skill description must be set")
                          .get();
     }
 
