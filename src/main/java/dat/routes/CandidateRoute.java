@@ -1,26 +1,56 @@
 package dat.routes;
 
-import dat.controllers.impl.CandidateController;
-import io.javalin.apibuilder.EndpointGroup;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
-
-public class CandidateRoute
+public
+class
+CandidateRoute
 {
-    private final CandidateController candidateController = new CandidateController();
+    private final dat.controllers.impl.CandidateController candidateController = new dat.controllers.impl.CandidateController();
 
-    protected EndpointGroup getRoutes()
+    protected
+    io.javalin.apibuilder.EndpointGroup
+    getRoutes()
     {
         return () ->
         {
-            get("/populate", candidateController::populate);
-            get("/filter", candidateController::filterByCategory);
-            post(candidateController::create);
-            get(candidateController::readAll);
-            get("/{id}", candidateController::read);
-            put("/{id}", candidateController::update);
-            delete("/{id}", candidateController::delete);
-            put("/{candidateId}/skills/{skillId}", candidateController::addSkillToCandidate);
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/populate",
+                    candidateController::populate
+            );
+
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/filter",
+                    candidateController::filterByCategory
+            );
+
+            io.javalin.apibuilder.ApiBuilder.post(
+                    "/",
+                    candidateController::create
+            );
+
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/get",
+                    candidateController::readAll
+            );
+
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/{id}",
+                    candidateController::read
+            );
+
+            io.javalin.apibuilder.ApiBuilder.patch(
+                    "/{id}",
+                    candidateController::update
+            );
+
+            io.javalin.apibuilder.ApiBuilder.delete(
+                    "/{id}",
+                    candidateController::delete
+            );
+
+            io.javalin.apibuilder.ApiBuilder.patch(
+                    "/{candidateId}/skills/{skillId}",
+                    candidateController::addSkillToCandidate
+            );
         };
     }
 }

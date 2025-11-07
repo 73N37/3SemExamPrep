@@ -280,7 +280,6 @@ CandidateController
         }
 
 
-
     }
 
     @Override
@@ -387,45 +386,70 @@ CandidateController
     filterByCategory(
             io.javalin.http.Context ctx
     ) {
-        java.lang.String                        category    = null;
-        java.util.List<dat.dtos.CandidateDTO>   filtered    = new java.util.ArrayList<>();
+        java.lang.String                        category    =   null;
+        java.util.List<dat.dtos.CandidateDTO>   filtered    =   new java.util.ArrayList();
+        java.util.List<dat.dtos.CandidateDTO>   unfiltered  =   new java.util.ArrayList();
 
         try {
-            category = ctx.queryParam(
-                    "category"
-            );
+            category = ctx.queryParam("category");
 
-            filtered = dao.filterByCategory(
-                    dat.entities.SkillCategory.valueOf(
-                            category.toUpperCase()
-                    )
-            );
+            if (
+                    category == null    ||
+                    category.isEmpty()
+            ) {
+                ctx.status(400);
+                ctx.json("{\"msg\": \"Category parameter is required\"}");
+                return;
+            }
 
-        } catch (
-                java.lang.Exception ex
-        ){
-            new dat.controllers.impl.ExceptionController().exceptionHandler(
-                    ex,
-                    ctx
-            );
-        }
+            unfiltered = dao.readAll();
 
-        if (
-                filtered            == null ||
-                filtered.isEmpty()          ||
-                category            == null
-        ) {
-            ctx.res().setStatus(
-                    502
-            );
-        } else {
-            ctx.res().setStatus(
+            for (
+                    dat.dtos.CandidateDTO candidate : unfiltered
+            ) {
+                java.util.Set<dat.dtos.SkillDTO> unfilteredSkills = candidate.skills();
+                for (
+                        dat.dtos.SkillDTO skill : unfilteredSkills
+                ) {
+                    if (
+                            skill.category().toString().equals(
+                                    category
+                            )
+                    ) {
+                        filtered.add(candidate);
+                    }
+                }
+            }
+
+
+
+            if (
+                    filtered == null    ||
+                    filtered.isEmpty()
+            ) {
+                ctx.status(404);
+                ctx.json("{\"msg\": \"No candidates found with skills in category: " + category + "\"}");
+                return;
+            }
+
+            ctx.status(
                     200
             );
+
             ctx.json(
                     filtered,
                     dat.dtos.CandidateDTO.class
             );
+
+        } catch (
+                IllegalArgumentException ex
+        ) {
+            ctx.status(400);
+            ctx.json("{\"msg\": \"Invalid category: " + category + "\"}");
+        } catch (
+                java.lang.Exception ex
+        ) {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(ex, ctx);
         }
     }
 

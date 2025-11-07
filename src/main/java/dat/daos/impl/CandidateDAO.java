@@ -63,7 +63,13 @@ CandidateDAO
             dat.dtos.CandidateDTO dto
     )   throws dat.exceptions.ApiException
     {
-            skillStatsService.enrichSkills(dto.skills());
+            skillStatsService.enrichSkills(
+                    dto.skills().stream().map(
+                            dat.entities.Skill::new
+                    ).collect(
+                            java.util.stream.Collectors.toSet()
+                    )
+            );
         // The skills in dto are already updated by reference since enrichSkills modifies them
     }
 
@@ -295,10 +301,15 @@ CandidateDAO
         }
     }
 
-    public dat.dtos.CandidateDTO getTopCandidateByPopularity() {
-        try (jakarta.persistence.EntityManager em = emf.createEntityManager()) {
+    public
+    dat.dtos.CandidateDTO
+    getTopCandidateByPopularity
+            () {
+        try (
+                jakarta.persistence.EntityManager em = emf.createEntityManager()
+        ) {
             jakarta.persistence.TypedQuery<dat.entities.Candidate> query = em.createQuery(
-                    "SELECT c FROM dat.entities.Candidate c LEFT JOIN c.skills s " +
+                        "SELECT c FROM dat.entities.Candidate c LEFT JOIN c.skills s " +
                             "GROUP BY c.id ORDER BY AVG(s.popularityScore) DESC",
                     dat.entities.Candidate.class
             );
@@ -319,14 +330,20 @@ CandidateDAO
         }
     }
 
-    public boolean validateSkillId(Long id) {
-        return SkillDAO.getInstance(dat.config.HibernateConfig.getEntityManagerFactory()).validatePrimaryKey(id);
+    public
+    boolean
+    validateSkillId(
+            java.lang.Long id
+    ) {
+        return SkillDAO.getInstance(
+                dat.config.HibernateConfig.getEntityManagerFactory()
+        ).validatePrimaryKey(id);
     }
 
     public
     void
     populate(
-            java.util.Set skills
+            java.util.Set<dat.entities.Candidate> candidates
     )
     {
         try
@@ -335,14 +352,18 @@ CandidateDAO
                 )
         {
             em.getTransaction().begin();
-            // I changed this since I only use the variable names to persist.
-            // I might as well just create a HashSet to avoid duplicates,
-            // while avoiding redundant variables, since it can just use a lambda
-            // expression to persist every object within my 'skills' HasSet
-            skills.stream().forEach(
-                    x -> em.persist(x)
-            );
+            for (
+                    dat.entities.Candidate candidate : candidates
+            ) {
+                if (candidate == null) continue;
+                // Attach or persist referenced category
+                if (candidate.getId() == null) {
+                    em.persist(candidate);
+                } else {
+                    em.merge(candidate);
+                }
 
+            }
             em.getTransaction().commit();
         }
     }

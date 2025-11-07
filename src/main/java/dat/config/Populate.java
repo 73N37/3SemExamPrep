@@ -101,12 +101,12 @@ Populate
                         "Merovingian",
                         "null",
                         "2x Ph.D",
-                        new java.util.HashSet(
-                                getSkills().stream().filter(
-                                        x ->  x.getName().equals("cpp")
-                                                ||  x.getSlug().equals("docker")
-                                ).collect(
-                                        java.util.stream.Collectors.toSet()
+                        java.util.Set.of(
+                                new dat.entities.Skill(
+                                       "C++",
+                                       "cpp",
+                                       dat.entities.SkillCategory.PROG_LANG,
+                                       "The best Object Oriented Programming language"
                                 )
                         )
                 ),
@@ -115,12 +115,12 @@ Populate
                         "Thomas Anderson",
                         "8888888",
                         "Self thought",
-                        new java.util.HashSet(
-                                getSkills().stream().filter(
-                                        x ->  x.getName().equals("junit")
-                                                ||  x.getSlug().equals("html")
-                                ).collect(
-                                        java.util.stream.Collectors.toSet()
+                        java.util.Set.of(
+                                new dat.entities.Skill(
+                                        "Docker",
+                                        "docker",
+                                        dat.entities.SkillCategory.DEVOPS,
+                                        "Container platform"
                                 )
                         )
                 ),
@@ -129,12 +129,12 @@ Populate
                         "Trinity",
                         "444",
                         "1x Bachelor",
-                        new java.util.HashSet(
-                                getSkills().stream().filter(
-                                        x ->  x.getName().equals("java")
-                                                ||  x.getSlug().equals("cpp")
-                                ).collect(
-                                        java.util.stream.Collectors.toSet()
+                        java.util.Set.of(
+                                new dat.entities.Skill(
+                                        "HTML",
+                                        "html",
+                                        dat.entities.SkillCategory.FRONTEND,
+                                        "Markdown language for static webpages"
                                 )
                         )
                 ),
@@ -143,12 +143,12 @@ Populate
                         "Morpheus",
                         "333",
                         "1x Masters",
-                        new java.util.HashSet(
-                                getSkills().stream().filter(
-                                        x ->  x.getName().equals("postgresql")
-                                                ||  x.getSlug().equals("docker")
-                                ).collect(
-                                        java.util.stream.Collectors.toSet()
+                        java.util.Set.of(
+                                new dat.entities.Skill(
+                                        "React",
+                                        "react",
+                                        dat.entities.SkillCategory.FRAMEWORK,
+                                        "JavaScript UI framework"
                                 )
                         )
                 ),
@@ -157,12 +157,12 @@ Populate
                         "Dozer",
                         "111",
                         "2x Masters",
-                        new java.util.HashSet(
-                                getSkills().stream().filter(
-                                        x ->  x.getName().equals("postgresql")
-                                                ||  x.getSlug().equals("html")
-                                ).collect(
-                                        java.util.stream.Collectors.toSet()
+                        java.util.Set.of(
+                                new dat.entities.Skill(
+                                        "C",
+                                        "c",
+                                        dat.entities.SkillCategory.PROG_LANG,
+                                        "A great functional programming language"
                                 )
                         )
                 ),
@@ -171,12 +171,12 @@ Populate
                         "Cipher",
                         "666",
                         "2x Masters",
-                        new java.util.HashSet(
-                                getSkills().stream().filter(
-                                        x ->  x.getName().equals("postgresql")
-                                                ||  x.getSlug().equals("html")
-                                ).collect(
-                                        java.util.stream.Collectors.toSet()
+                        java.util.Set.of(
+                                new dat.entities.Skill(
+                                        "Assembly",
+                                        "asm",
+                                        dat.entities.SkillCategory.PROG_LANG,
+                                        "A low-level programming language"
                                 )
                         )
                 )

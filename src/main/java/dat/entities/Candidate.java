@@ -10,22 +10,25 @@ Candidate {
     @jakarta.persistence.GeneratedValue(
             strategy = jakarta.persistence.GenerationType.IDENTITY
     )
-    private Long id;
+    private java.lang.Long id;
 
     @lombok.Setter
-    private String name;
+    private java.lang.String name;
 
     @lombok.Setter
-    private String phone;
+    private java.lang.String phone;
 
     @lombok.Setter
-    private String education;
-
+    private java.lang.String education;
 
     private double averagePopularityScore;
 
     @jakarta.persistence.ManyToMany(
-            fetch = jakarta.persistence.FetchType.EAGER
+            cascade = {
+                    jakarta.persistence.CascadeType.PERSIST,
+                    jakarta.persistence.CascadeType.MERGE
+            },
+            fetch = jakarta.persistence.FetchType.LAZY
     )
     @jakarta.persistence.JoinTable(
             name = "candidate_skill",
@@ -43,18 +46,17 @@ Candidate {
     public
     Candidate
             (
-                    java.lang.String name,
-                    java.lang.String phone,
-                    java.lang.String education,
-                    java.util.Set<dat.dtos.SkillDTO> skills
+                    java.lang.String                    name,
+                    java.lang.String                    phone,
+                    java.lang.String                    education,
+                    java.util.Set<dat.entities.Skill>   skills
             )
     {
-        this.name = name;
-        this.phone = phone;
-        this.education = education;
-        skills.stream();
+        this.name       =   name;
+        this.phone      =   phone;
+        this.education  =   education;
+        this.skills     =   skills;
     }
-
 
     public
     Candidate
@@ -66,13 +68,17 @@ Candidate {
                 dto.id() != null
         ) this.id = dto.id();
 
-        this.name = dto.name();
+        this.name       = dto.name();
 
-        this.phone = dto.phone();
+        this.phone      = dto.phone();
 
-        this.education = dto.education();
+        this.education  = dto.education();
 
-        this.skills = dto.skills();
+        this.skills     = dto.skills().stream().map(
+                dat.entities.Skill::new
+        ).collect(
+                java.util.stream.Collectors.toSet()
+        );
     }
 
     public
@@ -82,7 +88,9 @@ Candidate {
                     dat.entities.Skill skill
             )
     {
-        this.skills.add(skill);
+        this.skills.add(
+                skill
+        );
     }
 
     public

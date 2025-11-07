@@ -1,15 +1,36 @@
+@url = localhost:7070/api
+
 ### A simple get request to the test endpoint. No need for login
 GET {{url}}/auth/test/
 
 ### Populate the database with some data
-GET {{url}}/hotels/populate/
+GET {{url}}/candidates/populate/
 
-### Create a new user - this one will only get a USER role by default
-POST {{url}}/auth/register/
+### Retrieve skill (skid_id=1) from a candidate (candidate_id=1)
+GET {{url}}/candidates/1/skills/1/
+
+
+### Retrieve a candiadte based on a category
+GET {{url}}/candidates/filter?category=PROG_LANG
+
+### Create a candiadate
+POST {{url}}/candidates/
 
 {
-    "username": "user",
-    "password": "test123"
+    "name": "Oracle",
+
+    "phone": "any",
+
+    "education": "all",
+
+    "skills": [
+        {
+    "name": "Knowlegde",
+    "slug": "knowlegde",
+    "category": "FRAMEWORK",
+    "description": "She knows EVERYTHING"
+        }
+    ]
 }
 
 ###
@@ -47,7 +68,7 @@ Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
 ###
-GET {{url}}/hotels
+GET {{url}}/candidates
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
