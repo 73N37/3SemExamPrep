@@ -28,7 +28,7 @@ CandidateRoute
             );
 
             io.javalin.apibuilder.ApiBuilder.get(
-                    "/get",
+                    "/",
                     candidateController::readAll
             );
 

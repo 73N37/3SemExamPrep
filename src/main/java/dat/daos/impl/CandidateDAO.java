@@ -10,7 +10,7 @@ CandidateDAO
 
     private static CandidateDAO                             instance;
     private static jakarta.persistence.EntityManagerFactory emf;
-    private final dat.Service.SkillStatsService             skillStatsService = new dat.Service.SkillStatsService();
+    private final dat.services.SkillStatsService             skillStatsService = new dat.services.SkillStatsService();
 
     public 
     static
@@ -49,29 +49,40 @@ CandidateDAO
                     candidate
             );
 
-            enrichWithStats(
-                    dto
+            java.util.Set<dat.entities.Skill> skillsWithStats = new dat.services.SkillStatsService().enrichSkills(
+                    dto.skills().stream().map(
+                            dat.entities.Skill::new).collect(
+                                    java.util.stream.Collectors.toSet()
+                    )
             );
 
-            return dto;
+            dat.entities.Candidate candidateWithSkillStats = new dat.entities.Candidate(dto);
+            for (
+                    dat.entities.Skill skill : skillsWithStats
+            )   {
+                candidateWithSkillStats.addSkill(skill);
+            }
+
+
+            return new dat.dtos.CandidateDTO(candidateWithSkillStats);
         }
     }
 
-    private
-    void
-    enrichWithStats(
-            dat.dtos.CandidateDTO dto
-    )   throws dat.exceptions.ApiException
-    {
-            skillStatsService.enrichSkills(
-                    dto.skills().stream().map(
-                            dat.entities.Skill::new
-                    ).collect(
-                            java.util.stream.Collectors.toSet()
-                    )
-            );
-        // The skills in dto are already updated by reference since enrichSkills modifies them
-    }
+//    private
+//    void
+//    enrichWithStats(
+//            dat.dtos.CandidateDTO dto
+//    )   throws dat.exceptions.ApiException
+//    {
+//            skillStatsService.enrichSkills(
+//                    dto.skills().stream().map(
+//                            dat.entities.Skill::new
+//                    ).collect(
+//                            java.util.stream.Collectors.toSet()
+//                    )
+//            );
+//        // The skills in dto are already updated by reference since enrichSkills modifies them
+//    }
 
     @Override
     public

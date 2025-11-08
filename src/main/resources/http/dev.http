@@ -6,10 +6,6 @@ GET {{url}}/auth/test/
 ### Populate the database with some data
 GET {{url}}/candidates/populate/
 
-### Retrieve skill (skid_id=1) from a candidate (candidate_id=1)
-GET {{url}}/candidates/1/skills/1/
-
-
 ### Retrieve a candiadte based on a category
 GET {{url}}/candidates/filter?category=PROG_LANG
 
@@ -23,7 +19,8 @@ POST {{url}}/candidates/
 
     "education": "all",
 
-    "skills": [
+    "skills":
+    [
         {
     "name": "Knowlegde",
     "slug": "knowlegde",
@@ -32,6 +29,41 @@ POST {{url}}/candidates/
         }
     ]
 }
+
+### Retrieve all candidates
+GET {{url}}/candidates/
+
+### Retrieve a candidate by ID
+GET {{url}}/candidates/1/
+
+### Update a candidate by ID
+PATCH {{url}}/candidates/1/
+
+{
+    "name": "Oracle",
+
+    "phone": "any",
+
+    "education": "all",
+
+    "skills":
+    [
+        {
+    "name": "Knowlegde",
+    "slug": "knowlegde",
+    "category": "FRAMEWORK",
+    "description": "She knows EVERYTHING"
+        }
+    ]
+}
+
+### Delete a candidate by ID
+DELETE {{url}}/candidates/1/
+
+
+### Retrieve skill (skid_id=1) from a candidate (candidate_id=1)
+PATCH {{url}}/candidates/1/skills/1/
+
 
 ###
 POST {{url}}/auth/login/

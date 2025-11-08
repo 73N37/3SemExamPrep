@@ -93,6 +93,7 @@ Candidate {
         );
     }
 
+
     public
     void
     setAveragePopularityScore

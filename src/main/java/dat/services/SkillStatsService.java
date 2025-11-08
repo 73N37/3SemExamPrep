@@ -1,10 +1,10 @@
-package dat.Service;
+package dat.services;
 
 public
 class
 SkillStatsService
 {
-    private static final    java.lang.String                            API_URL = "https://api.example.com/tech-skills";
+    private static final    java.lang.String                            API_URL = "https://apiprovider.cphbusinessapps.dk/api/v1/skills/stats?slugs=java,spring-boot,postgresql";
 
     private final           java.net.http.HttpClient                    client;
 
@@ -97,7 +97,7 @@ SkillStatsService
     }
 
     public
-    java.util.List<dat.entities.Skill>
+    java.util.Set<dat.entities.Skill>
     enrichSkills(
             java.util.Set<dat.entities.Skill> skills
     ) throws dat.exceptions.ApiException {
@@ -154,6 +154,6 @@ SkillStatsService
                     skill
             );
         }
-        return enrichedSkills;
+        return new java.util.HashSet(enrichedSkills);
     }
 }

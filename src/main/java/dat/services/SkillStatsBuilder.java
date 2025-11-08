@@ -1,4 +1,4 @@
-package dat.Service;
+package dat.services;
 
 @lombok.Setter
 public
