@@ -6,14 +6,19 @@ CandidateController
         implements dat.controllers.IController< dat.dtos.CandidateDTO,
                                                 java.lang.Long          >
 {
-    private final dat.daos.impl.CandidateDAO dao;
+    private final dat.daos.impl.CandidateDAO    candidateDAO;
+    private final dat.daos.impl.SkillDAO        skillDAO;
 
     public 
     CandidateController()
     {
         jakarta.persistence.EntityManagerFactory emf    = dat.config.HibernateConfig.getEntityManagerFactory();
         
-        this.dao                                        = dat.daos.impl.CandidateDAO.getInstance(
+        this.candidateDAO   = dat.daos.impl.CandidateDAO.getInstance(
+                emf
+        );
+
+        this.skillDAO       = dat.daos.impl.SkillDAO.getInstance(
                 emf
         );
     }
@@ -36,7 +41,7 @@ CandidateController
                     "Not a valid id"
             ).get();
 
-            candidateDTO = dao.read(
+            candidateDTO = candidateDAO.read(
                     id
             );
         } catch (
@@ -70,7 +75,7 @@ CandidateController
 
             ctx.json(
                     candidateDTO,
-                    dat.dtos.CandidateDTO.class
+                    candidateDTO.getClass()
             );
         }
     }
@@ -84,7 +89,7 @@ CandidateController
         java.util.List<dat.dtos.CandidateDTO> candidateDTOs = null;
 
         try {
-            candidateDTOs = dao.readAll();
+            candidateDTOs = candidateDAO.readAll();
         }   catch (
                 dat.exceptions.ApiException ex
         ) {
@@ -116,7 +121,7 @@ CandidateController
 
             ctx.json(
                     candidateDTOs,
-                    dat.dtos.CandidateDTO.class
+                    candidateDTOs.getClass()
             );
         }
     }
@@ -134,7 +139,7 @@ CandidateController
                     ctx
             );
 
-            candidateDTO = dao.create(
+            candidateDTO = candidateDAO.create(
                     jsonRequest
             );
         } catch (
@@ -168,7 +173,7 @@ CandidateController
 
             ctx.json(
                     candidateDTO,
-                    dat.dtos.CandidateDTO.class
+                    candidateDTO.getClass()
             );
         }
     }
@@ -190,7 +195,7 @@ CandidateController
                     "Not a valid id"
             ).get();
 
-            candidateDTO = dao.update(
+            candidateDTO = candidateDAO.update(
                     id,
                     validateEntity(ctx)
             );
@@ -247,7 +252,7 @@ CandidateController
                     "Not a valid id"
             ).get();
 
-            dao.delete(
+            candidateDAO.delete(
                     id
             );
         } catch (
@@ -288,7 +293,7 @@ CandidateController
     validatePrimaryKey(
             java.lang.Long id
     ) {
-        return dao.validatePrimaryKey(
+        return candidateDAO.validatePrimaryKey(
                 id
         );
     }
@@ -334,13 +339,13 @@ CandidateController
                     "skillId",
                     java.lang.Long.class
             ).check(
-                    id -> dao.validateSkillId(
+                    id -> candidateDAO.validateSkillId(
                             id
                     ),
                     "Not a valid skill id"
             ).get();
 
-            candidateDTO = dao.addSkillToCandidate(
+            candidateDTO = candidateDAO.addSkillToCandidate(
                     candidateId,
                     skillId
             );
@@ -366,7 +371,7 @@ CandidateController
 
             ctx.json(
                     candidateDTO,
-                    dat.dtos.CandidateDTO.class
+                    candidateDTO.getClass()
             );
         }
 
@@ -402,7 +407,7 @@ CandidateController
                 return;
             }
 
-            unfiltered = dao.readAll();
+            unfiltered = candidateDAO.readAll();
 
             for (
                     dat.dtos.CandidateDTO candidate : unfiltered
@@ -455,10 +460,178 @@ CandidateController
 
     public
     void
+    getSkillByCandidate(
+            io.javalin.http.Context ctx
+    ) {
+        java.lang.Long                          candidateId =   null;
+        java.lang.Long                          skillId     =   null;
+        dat.dtos.CandidateDTO                   candidate;
+        dat.dtos.SkillDTO                       skill;
+
+        try {
+            candidateId =   ctx.pathParamAsClass(
+                    "candidateId",
+                    java.lang.Long.class
+            ).check(
+                    this::validatePrimaryKey,
+                    "Not a valid primary key"
+            ).get();
+
+            skillId     =   ctx.pathParamAsClass(
+                    "skillId",
+                    java.lang.Long.class
+            ).check(
+                    this::validatePrimaryKey,
+                    "Not valid primary key"
+            ).get();
+
+            dat.entities.Skill      skillEntity;
+            skill       =   skillDAO.read(
+                    skillId
+            );
+            skillEntity     =   new dat.entities.Skill(
+                    skill
+            );
+
+            dat.entities.Candidate  candidateEntity;
+            candidate   =   candidateDAO.read(
+                    candidateId
+            );
+            candidateEntity =   new dat.entities.Candidate(
+                    candidate
+            );
+
+            candidateEntity.addSkill(skillEntity);
+
+            candidate = new dat.dtos.CandidateDTO(candidateEntity);
+
+            if  (
+                    candidate       ==  null    ||
+                    candidateEntity ==  null    ||
+                    skill           ==  null    ||
+                    skillEntity     ==  null
+            )   {
+                ctx.res().setStatus(
+                        502
+                );
+            }   else    {
+                ctx.res().setStatus(
+                        200
+                );
+                ctx.json(
+                        skill,
+                        skill.getClass()
+                );
+            }
+
+
+        }   catch (
+                IllegalArgumentException ex
+        )   {
+            ctx.status(
+                    400
+            );
+            ctx.json("{\"msg\": \"Invalid candidateId: " + candidateId + " or skillId: "+ skillId + "\"}");
+        }   catch (
+                dat.exceptions.ApiException ex
+        )   {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        }   catch (
+                java.lang.Exception ex
+        )   {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
+        }
+    }
+
+    public
+    void
+    getAllSkillsByCandidate(
+            io.javalin.http.Context ctx
+    ) {
+        java.lang.Long                      candidateId =   null;
+        dat.dtos.CandidateDTO               candidate;
+        java.util.List<dat.dtos.SkillDTO>   skills      =   new java.util.ArrayList();
+
+        try {
+            candidateId =   ctx.pathParamAsClass(
+                    "candidateId",
+                    java.lang.Long.class
+            ).check(this::validatePrimaryKey,
+                    "Invalid primary Key"
+            ).get();
+
+            candidate   =   candidateDAO.read(
+                    candidateId
+            );
+
+            dat.entities.Candidate  candidateEntity =   new dat.entities.Candidate(
+                    candidate
+            );
+
+            for (
+                    dat.entities.Skill skill : candidateEntity.getSkills()
+            )   {
+                if (
+                        skill == null
+                ) continue;
+                skills.add(new dat.dtos.SkillDTO(
+                        skill
+                ));
+            }
+
+            if (
+                    skills == null  ||
+                    skills.isEmpty()
+            )   {
+                ctx.res().setStatus(
+                        502
+                );
+            }   else    {
+                ctx.res().setStatus(
+                        200
+                );
+                ctx.json(
+                        skills,
+                        skills.getClass()
+                );
+            }
+
+        }   catch (
+                IllegalArgumentException ex
+        )   {
+            ctx.status(
+                    400
+            );
+            ctx.json("{\"msg\": \"Invalid candidateId: " + candidateId + "\"}");
+        }   catch (
+                dat.exceptions.ApiException ex
+        )   {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        }   catch (
+                java.lang.Exception ex
+        )   {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
+        }
+    }
+
+    public
+    void
     populate(
             io.javalin.http.Context ctx
     ) {
-        dao.populate(
+        candidateDAO.populate(
                 dat.config.Populate.getCandidates()
         );
 

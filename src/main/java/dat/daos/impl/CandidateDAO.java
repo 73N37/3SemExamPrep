@@ -196,20 +196,22 @@ CandidateDAO
         )
         {
             em.getTransaction().begin();
-            dat.entities.Candidate candidate = em.find(
-                    dat.entities.Candidate.class,
-                    id
-            );
 
-            if (
-                    candidate != null
-            )
-            {
-                em.remove(
-                        candidate
-                );
+            dat.entities.Candidate candidate = em.find(dat.entities.Candidate.class, id);
+
+            if (candidate != null) {
+                // Remove candidate from all associated skills
+                for (dat.entities.Skill skill : candidate.getSkills()) {
+                    skill.getCandidates().remove(candidate);
+                }
+                candidate.getSkills().clear();
+
+                em.remove(candidate);
+                em.getTransaction().commit();
+            } else {
+                em.getTransaction().rollback();
+                throw new dat.exceptions.ApiException(502, "Candidate with id=" + id + " not found");
             }
-            em.getTransaction().commit();
         }
     }
 

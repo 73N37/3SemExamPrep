@@ -12,11 +12,12 @@ CandidateRoute
     {
         return () ->
         {
+//TODO =====================[General]==============================
             io.javalin.apibuilder.ApiBuilder.get(
                     "/populate",
                     candidateController::populate
             );
-
+//TODO =====================[Candidate]============================
             io.javalin.apibuilder.ApiBuilder.get(
                     "/filter",
                     candidateController::filterByCategory
@@ -45,6 +46,16 @@ CandidateRoute
             io.javalin.apibuilder.ApiBuilder.delete(
                     "/{id}",
                     candidateController::delete
+            );
+//TODO =====================[Skill]================================
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/{candidateId}/skills/{skillId}",
+                    candidateController::getSkillByCandidate
+            );
+
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/{candidateId}/skills",
+                    candidateController::getAllSkillsByCandidate
             );
 
             io.javalin.apibuilder.ApiBuilder.patch(

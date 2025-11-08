@@ -57,12 +57,20 @@ PATCH {{url}}/candidates/1/
     ]
 }
 
+### Add skill (skid_id=2) on a candidate (candidate_id=1)
+PATCH {{url}}/candidates/1/skills/2/
+
 ### Delete a candidate by ID
-DELETE {{url}}/candidates/1/
+DELETE {{url}}/candidates/2/
+
+### Retrieve a skill (with id) by a candidate (with id)
+GET {{url}}/candidates/1/skills/1/
+
+### Retrieve a all skills (with id) associated to a candidate (by id)
+GET {{url}}/candidates/1/skills/
 
 
-### Retrieve skill (skid_id=1) from a candidate (candidate_id=1)
-PATCH {{url}}/candidates/1/skills/1/
+
 
 
 ###

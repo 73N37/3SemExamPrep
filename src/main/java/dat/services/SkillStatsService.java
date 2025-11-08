@@ -4,7 +4,7 @@ public
 class
 SkillStatsService
 {
-    private static final    java.lang.String                            API_URL = "https://apiprovider.cphbusinessapps.dk/api/v1/skills/stats?slugs=java,spring-boot,postgresql";
+    private static final    java.lang.String                            API_URL = "https://apiprovider.cphbusinessapps.dk/api/v1/skills/stats?slugs=";
 
     private final           java.net.http.HttpClient                    client;
 
