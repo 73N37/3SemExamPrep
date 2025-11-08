@@ -15,8 +15,8 @@ Populate
 
         jakarta.persistence.EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
-        java.util.Set<dat.entities.Skill>       skills      = getSkills();
-        java.util.Set<dat.entities.Candidate>   candidates  = getCandidates();
+        java.util.Set<dat.entities.Skill>       skills      = populateSkills();
+        java.util.Set<dat.entities.Candidate>   candidates  = populateCandidates();
 
         try (
                 jakarta.persistence.EntityManager em = emf.createEntityManager()
@@ -24,7 +24,7 @@ Populate
         {
             em.getTransaction().begin();
 
-            getCandidates().stream().forEach(x -> em.persist(x));
+            populateCandidates().stream().forEach(x -> em.persist(x));
 
             em.getTransaction().commit();
         }
@@ -34,8 +34,7 @@ Populate
     public
     static
     java.util.Set<dat.entities.Skill>
-    getSkills
-            ()
+    populateSkills()
     {
         return java.util.Set.of(
                 new dat.entities.Skill(
@@ -93,8 +92,7 @@ Populate
     public
     static
     java.util.Set<dat.entities.Candidate>
-    getCandidates
-            ()
+    populateCandidates()
     {
         return java.util.Set.of(
                 new dat.entities.Candidate(
@@ -179,6 +177,20 @@ Populate
                                         "A low-level programming language"
                                 )
                         )
+                )
+        );
+    }
+
+    @org.jetbrains.annotations.NotNull
+    public
+    static
+    java.util.Set<dat.security.entities.User>
+    populateUsers()
+    {
+        return java.util.Set.of(
+                new dat.security.entities.User(
+                        "user",
+                        "test123"
                 )
         );
     }

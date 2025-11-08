@@ -61,16 +61,13 @@ PATCH {{url}}/candidates/1/
 PATCH {{url}}/candidates/1/skills/2/
 
 ### Delete a candidate by ID
-DELETE {{url}}/candidates/2/
+DELETE {{url}}/candidates/1/
 
 ### Retrieve a skill (with id) by a candidate (with id)
 GET {{url}}/candidates/1/skills/1/
 
 ### Retrieve a all skills (with id) associated to a candidate (by id)
 GET {{url}}/candidates/1/skills/
-
-
-
 
 
 ###
@@ -106,56 +103,3 @@ Authorization: Bearer {{jwt_token}}
 }
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
-
-###
-GET {{url}}/candidates
-Accept: application/json
-Authorization: Bearer {{jwt_token}}
-
-###
-GET {{url}}/hotels/2
-
-###
-POST {{url}}/hotels
-Content-Type: application/json
-Authorization: Bearer {{jwt_token}}
-
-{
-  "hotelName": "Holiday Inn",
-  "hotelAddress": "Stuttgart",
-  "hotelType": "STANDARD"
-}
-
-###
-PUT {{url}}/hotels/3
-Content-Type: application/json
-
-{
-  "hotelName": "Ritz Carlton",
-  "hotelAddress": "London City",
-  "hotelType": "LUXURY"
-}
-
-###
-DELETE {{url}}/hotels/5
-Authorization: Bearer {{jwt_token}}
-
-// Room API
-###
-GET {{url}}/rooms
-Authorization: Bearer {{jwt_token}}
-
-###
-GET {{url}}/rooms/1
-Authorization: Bearer {{jwt_token}}
-
-###
-POST {{url}}/rooms/hotel/1
-Content-Type: application/json
-Authorization: Bearer {{jwt_token}}
-
-{
-  "roomNumber": 11,
-  "roomPrice": 1150,
-  "roomType": "SINGLE"
-}

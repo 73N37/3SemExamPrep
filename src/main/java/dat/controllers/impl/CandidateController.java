@@ -374,18 +374,8 @@ CandidateController
                     candidateDTO.getClass()
             );
         }
-
-        ctx.res().setStatus(
-                200
-        );
-
-        ctx.json(
-                candidateDTO,
-                dat.dtos.CandidateDTO.class
-        );
     }
 
-    // In CandidateController
     public
     void
     filterByCategory(
@@ -492,6 +482,7 @@ CandidateController
             skillEntity     =   new dat.entities.Skill(
                     skill
             );
+            //dat.dtos.
 
             dat.entities.Candidate  candidateEntity;
             candidate   =   candidateDAO.read(
@@ -501,7 +492,7 @@ CandidateController
                     candidate
             );
 
-            candidateEntity.addSkill(skillEntity);
+            //candidateEntity.addSkill(skillEntity);
 
             candidate = new dat.dtos.CandidateDTO(candidateEntity);
 
@@ -628,11 +619,99 @@ CandidateController
 
     public
     void
+    deleteSkillByCandidate(
+            io.javalin.http.Context ctx
+    ) {
+        java.lang.Long  candidateId =   null;
+        java.lang.Long  skillId     =   null;
+
+        try {
+            candidateId =   ctx.pathParamAsClass(
+                    "candidateId",
+                    java.lang.Long.class
+            ).check(this::validatePrimaryKey,
+                    "Invalid primary key"
+            ).get();
+
+            skillId     =   ctx.pathParamAsClass(
+                    "skillId",
+                    java.lang.Long.class
+            ).check(this::validatePrimaryKey,
+                    "Invalid primary ket"
+            ).get();
+
+           dat.dtos.CandidateDTO                candidateDTO        =   candidateDAO.read(
+                   candidateId
+           );
+           dat.entities.Candidate               candidateEntity     =   new dat.entities.Candidate(
+                   candidateDTO
+           );
+
+
+           for (
+                   dat.entities.Skill skill : candidateEntity.getSkills()
+           )    {
+               if   (
+                       skill.getId() == skillId
+               )    candidateEntity.removeSkill(skill);
+
+           }
+
+           skillDAO.delete(
+                   skillId
+           );
+
+           candidateDAO.update(
+                   candidateId,
+                   new dat.dtos.CandidateDTO(
+                           candidateEntity
+                   )
+           );
+
+            if  (
+                    candidateId     ==  null    ||
+                    skillId         ==  null
+            )   {
+                ctx.res().setStatus(
+                        502
+                );
+            }   else    {
+                ctx.res().setStatus(
+                        204
+                );
+            }
+
+        }  catch (
+                IllegalArgumentException ex
+        )   {
+            ctx.status(
+                    400
+            );
+            ctx.json("{\"msg\": \"Invalid candidateId: " + candidateId + "\"}");
+        }   catch (
+                dat.exceptions.ApiException ex
+        )   {
+            new dat.controllers.impl.ExceptionController().apiExceptionHandler(
+                    ex,
+                    ctx
+            );
+        }   catch (
+                java.lang.Exception ex
+        )   {
+            new dat.controllers.impl.ExceptionController().exceptionHandler(
+                    ex,
+                    ctx
+            );
+        }
+    }
+
+    public
+    void
     populate(
             io.javalin.http.Context ctx
     ) {
         candidateDAO.populate(
-                dat.config.Populate.getCandidates()
+                dat.config.Populate.populateCandidates()
         );
 
         ctx.res().setStatus(

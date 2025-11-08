@@ -62,6 +62,11 @@ CandidateRoute
                     "/{candidateId}/skills/{skillId}",
                     candidateController::addSkillToCandidate
             );
+
+            io.javalin.apibuilder.ApiBuilder.delete(
+                    "/{candidateId}/skills/{skillId}",
+                    candidateController::deleteSkillByCandidate
+            );
         };
     }
 }

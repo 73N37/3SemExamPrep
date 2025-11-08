@@ -1,19 +1,34 @@
 package dat.security.exceptions;
 
-import dat.utils.Utils;
 
 /**
  * Purpose: To handle exceptions in the API
  * Author: Thomas Hartmann
  */
-public class ApiException extends RuntimeException {
+public
+class
+ApiException
+        extends java.lang.RuntimeException
+{
     private int code;
-    public ApiException (int code, String msg) {
-        super(msg);
+
+    public
+    ApiException (
+            int code,
+            java.lang.String msg
+    ) {
+        super(
+                msg
+        );
+
         this.code = code;
     }
 
-    public int getCode() {
+    public
+    int
+    getCode(
+
+    ) {
         return code;
     }
 }

@@ -1,26 +1,27 @@
 package dat.routes;
 
-import io.javalin.apibuilder.EndpointGroup;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
-
-public class Routes
+public
+class
+Routes
 {
 
     private final SkillRoute        skillRoute      = new SkillRoute();
     private final CandidateRoute    candidateRoute  = new CandidateRoute();
 
 
-    public EndpointGroup getRoutes()
-    {
+    public
+    io.javalin.apibuilder.EndpointGroup
+    getRoutes(
+
+    )   {
         return () ->
         {
-                path(
+                io.javalin.apibuilder.ApiBuilder.path(
                         "/skills",
                         skillRoute.getRoutes()
                 );
 
-                path(
+            io.javalin.apibuilder.ApiBuilder.path(
                         "/candidates",
                         candidateRoute.getRoutes()
                 );

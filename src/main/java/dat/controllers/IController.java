@@ -1,14 +1,13 @@
 package dat.controllers;
 
-import io.javalin.http.Context;
 
 public interface IController<DTO, ID> {
-    void read(Context ctx);
-    void readAll(Context ctx);
-    void create(Context ctx);
-    void update(Context ctx);
-    void delete(Context ctx);
+    void read(io.javalin.http.Context ctx);
+    void readAll(io.javalin.http.Context ctx);
+    void create(io.javalin.http.Context ctx);
+    void update(io.javalin.http.Context ctx);
+    void delete(io.javalin.http.Context ctx);
     boolean validatePrimaryKey(ID d);
-    DTO validateEntity(Context ctx) ;
+    DTO validateEntity(io.javalin.http.Context ctx) ;
 
 }

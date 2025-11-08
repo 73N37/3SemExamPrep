@@ -1,25 +1,48 @@
 package dat.routes;
 
+public
+class
+SkillRoute {
 
-import dat.controllers.impl.SkillController;
-import io.javalin.apibuilder.EndpointGroup;
+    private final dat.controllers.impl.SkillController skillController = new dat.controllers.impl.SkillController();
 
-import static io.javalin.apibuilder.ApiBuilder.*;
+    protected
+    io.javalin.apibuilder.EndpointGroup
+    getRoutes(
 
-public class SkillRoute {
-
-    private final SkillController skillController = new SkillController();
-
-    protected EndpointGroup getRoutes() {
+    ) {
 
         return () ->
         {
-            get("/populate", skillController::populate);
-            post("/", skillController::create);
-            get("/", skillController::readAll);
-            get("/{id}", skillController::read);
-            put("/{id}", skillController::update);
-            delete("/{id}", skillController::delete);
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/populate",
+                    skillController::populate
+            );
+
+            io.javalin.apibuilder.ApiBuilder.post(
+                    "/",
+                    skillController::create
+            );
+
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/",
+                    skillController::readAll
+            );
+
+            io.javalin.apibuilder.ApiBuilder.get(
+                    "/{id}",
+                    skillController::read
+            );
+
+            io.javalin.apibuilder.ApiBuilder.put(
+                    "/{id}",
+                    skillController::update
+            );
+
+            io.javalin.apibuilder.ApiBuilder.delete(
+                    "/{id}",
+                    skillController::delete
+            );
         };
     }
 }

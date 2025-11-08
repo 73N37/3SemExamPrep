@@ -1,7 +1,6 @@
 package dat.security.controllers;
 
-import io.javalin.http.Context;
 
 public interface IAccessController {
-    void accessHandler(Context ctx);
+    void accessHandler(io.javalin.http.Context ctx);
 }

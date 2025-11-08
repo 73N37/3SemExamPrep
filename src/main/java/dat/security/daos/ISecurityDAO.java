@@ -1,11 +1,21 @@
 package dat.security.daos;
 
-import dat.security.entities.User;
-import dat.security.exceptions.ValidationException;
-import dk.bugelhartmann.UserDTO;
-
 public interface ISecurityDAO {
-    UserDTO getVerifiedUser(String username, String password) throws ValidationException;
-    User createUser(String username, String password);
-    User addRole(UserDTO user, String newRole);
+    dk.bugelhartmann.UserDTO
+    getVerifiedUser(
+            java.lang.String            username,
+            java.lang.String            password
+    ) throws dat.security.exceptions.ValidationException;
+
+    dat.security.entities.User
+    createUser(
+            java.lang.String            username,
+            java.lang.String            password
+    );
+
+    dat.security.entities.User
+    addRole(
+            dk.bugelhartmann.UserDTO    user,
+            java.lang.String            newRole
+    );
 }

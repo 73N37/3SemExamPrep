@@ -1,83 +1,165 @@
 package dat.security.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.mindrot.jbcrypt.BCrypt;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Purpose: To handle security in the API
  * Author: Thomas Hartmann
  */
-@Entity
-@Table(name = "users")
-@NamedQueries(@NamedQuery(name = "User.deleteAllRows", query = "DELETE from User"))
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class User implements Serializable, ISecurityUser {
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(
+        name = "users"
+)
+@jakarta.persistence.NamedQueries(
+        @jakarta.persistence.NamedQuery(
+                name = "User.deleteAllRows",
+                query = "DELETE from User"
+        )
+)
+@lombok.Getter
+@lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.ToString
+public
+class
+User
+        implements  java.io.Serializable,
+                    ISecurityUser
+{
 
-    @Serial
+    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Basic(optional = false)
-    @Column(name = "username", length = 25)
-    private String username;
-    @Basic(optional = false)
-    @Column(name = "password")
-    private String password;
+    @jakarta.persistence.Id
+    @jakarta.persistence.Basic(
+            optional = false
+    )
+    @jakarta.persistence.Column(
+            name = "username",
+            length = 25
+    )
+    private java.lang.String username;
 
-    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Set<Role> roles = new HashSet<>();
 
-    public Set<String> getRolesAsStrings() {
-        if (roles.isEmpty()) {
+    @jakarta.persistence.Basic(
+            optional = false
+    )
+    @jakarta.persistence.Column(
+            name = "password"
+    )
+    private java.lang.String password;
+
+    @jakarta.persistence.JoinTable(
+            name = "user_roles",
+            joinColumns = {
+                    @jakarta.persistence.JoinColumn(
+                            name = "user_name",
+                            referencedColumnName = "username"
+                    )
+            }, inverseJoinColumns = {
+                    @jakarta.persistence.JoinColumn(
+                            name = "role_name",
+                            referencedColumnName = "name"
+                    )
+            }
+    )
+    @jakarta.persistence.ManyToMany(
+            fetch = jakarta.persistence.FetchType.EAGER,
+            cascade = jakarta.persistence.CascadeType.PERSIST
+    )
+    private java.util.Set<Role> roles = new java.util.HashSet<>();
+
+    public
+    java.util.Set<java.lang.String>
+    getRolesAsStrings(
+
+    ) {
+        if (
+                roles.isEmpty()
+        ) {
             return null;
         }
-        Set<String> rolesAsStrings = new HashSet<>();
-        roles.forEach((role) -> {
-            rolesAsStrings.add(role.getRoleName());
-        });
+        java.util.Set<java.lang.String> rolesAsStrings = new java.util.HashSet<>();
+        roles.forEach(
+                (role
+                ) -> {
+                    rolesAsStrings.add(
+                            role.getRoleName()
+                    );
+                }
+        );
         return rolesAsStrings;
     }
 
-    public boolean verifyPassword(String pw) {
-        return BCrypt.checkpw(pw, this.password);
+    public
+    boolean
+    verifyPassword(
+            java.lang.String pw
+    ) {
+        return org.mindrot.jbcrypt.BCrypt.checkpw(
+                pw,
+                this.password
+        );
     }
 
-    public User(String userName, String userPass) {
+    public
+    User(
+            java.lang.String userName,
+            java.lang.String userPass
+    ) {
         this.username = userName;
-        this.password = BCrypt.hashpw(userPass, BCrypt.gensalt());
+        this.password = org.mindrot.jbcrypt.BCrypt.hashpw(
+                userPass,
+                org.mindrot.jbcrypt.BCrypt.gensalt()
+        );
     }
 
-    public User(String userName, Set<Role> roleEntityList) {
+    public
+    User(
+            java.lang.String userName,
+            java.util.Set<Role> roleEntityList
+    ) {
         this.username = userName;
         this.roles = roleEntityList;
     }
 
-    public void addRole(Role role) {
-        if (role == null) {
+    public
+    void
+    addRole(
+            Role role
+    ) {
+        if (
+                role == null
+        ) {
             return;
         }
-        roles.add(role);
-        role.getUsers().add(this);
+        roles.add(
+                role
+        );
+        role.getUsers().add(
+                this
+        );
     }
 
-    public void removeRole(String userRole) {
+    public
+    void
+    removeRole(
+            java.lang.String userRole
+    ) {
         roles.stream()
-                .filter(role -> role.getRoleName().equals(userRole))
+                .filter(
+                        role -> role.getRoleName().equals(
+                                userRole
+                        )
+                )
                 .findFirst()
-                .ifPresent(role -> {
-                    roles.remove(role);
-                    role.getUsers().remove(this);
+                .ifPresent(
+                        role -> {
+                            roles.remove(
+                                    role
+                            );
+                            role.getUsers().remove(
+                                    this
+                            );
                 });
     }
 }

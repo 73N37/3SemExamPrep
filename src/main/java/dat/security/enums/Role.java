@@ -1,7 +1,12 @@
 package dat.security.enums;
 
-import io.javalin.security.RouteRole;
-
-public enum Role implements RouteRole {
-    ANYONE, USER, ADMIN, SUPERMAN;
+public
+enum
+Role
+        implements io.javalin.security.RouteRole
+{
+    ANYONE,
+    USER,
+    ADMIN,
+    SUPERMAN;
 }

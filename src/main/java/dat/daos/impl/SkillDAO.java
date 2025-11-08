@@ -20,11 +20,10 @@ SkillDAO
     public
     static
     SkillDAO
-    getInstance
-            (
-                    @org.jetbrains.annotations.NotNull
-                    jakarta.persistence.EntityManagerFactory _emf
-            )
+    getInstance(
+            @org.jetbrains.annotations.NotNull
+            jakarta.persistence.EntityManagerFactory _emf
+    )
     {
         if (instance == null)
         {
@@ -43,11 +42,10 @@ SkillDAO
     @Override
     public
     dat.dtos.SkillDTO
-    read
-            (
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.Long id
-            )   throws dat.exceptions.ApiException
+    read(
+            @org.jetbrains.annotations.NotNull
+            java.lang.Long id
+    )   throws dat.exceptions.ApiException
     {
         try
                 (
@@ -127,11 +125,10 @@ SkillDAO
 
     public
     java.util.List<dat.dtos.SkillDTO>
-    readByCategory
-            (
-                    @org.jetbrains.annotations.NotNull
-                    dat.entities.SkillCategory category
-            )   throws dat.exceptions.ApiException
+    readByCategory(
+            @org.jetbrains.annotations.NotNull
+            dat.entities.SkillCategory category
+    )   throws dat.exceptions.ApiException
     {
         try
                 (
@@ -174,11 +171,10 @@ SkillDAO
 
     public
     java.util.List<dat.dtos.SkillDTO>
-    readBySlug
-            (
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.String slug
-            )   throws dat.exceptions.ApiException
+    readBySlug(
+            @org.jetbrains.annotations.NotNull
+            java.lang.String slug
+    )   throws dat.exceptions.ApiException
     {
         java.util.List<dat.dtos.SkillDTO> all = readAll();
         if
@@ -205,11 +201,10 @@ SkillDAO
     @Override
     public
     dat.dtos.SkillDTO
-    create
-            (
-                    @org.jetbrains.annotations.NotNull
-                    dat.dtos.SkillDTO skillDTO
-            ) throws dat.exceptions.ApiException
+    create(
+            @org.jetbrains.annotations.NotNull
+            dat.dtos.SkillDTO skillDTO
+    ) throws dat.exceptions.ApiException
     {
         try
                 (
@@ -256,14 +251,13 @@ SkillDAO
     @Override
     public
     dat.dtos.SkillDTO
-    update
-            (
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.Long id,
+    update(
+            @org.jetbrains.annotations.NotNull
+            java.lang.Long id,
 
-                    @org.jetbrains.annotations.NotNull
-                    dat.dtos.SkillDTO skillDTO
-            ) throws dat.exceptions.ApiException
+            @org.jetbrains.annotations.NotNull
+            dat.dtos.SkillDTO skillDTO
+    ) throws dat.exceptions.ApiException
     {
         try
                 (
@@ -330,11 +324,10 @@ SkillDAO
     @Override
     public
     void
-    delete
-            (
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.Long id
-            ) throws dat.exceptions.ApiException
+    delete(
+            @org.jetbrains.annotations.NotNull
+            java.lang.Long id
+    ) throws dat.exceptions.ApiException
     {
         try
                 (
@@ -374,11 +367,10 @@ SkillDAO
     @Override
     public
     boolean
-    validatePrimaryKey
-            (
-                    @org.jetbrains.annotations.NotNull
-                    java.lang.Long id
-            )
+    validatePrimaryKey(
+            @org.jetbrains.annotations.NotNull
+            java.lang.Long id
+    )
     {
         // What makes this method unique is that it does not throw an exception,
         // because it is meant to be validated if a database entry exists (based on its PK) in the database
@@ -406,6 +398,7 @@ SkillDAO
     public
     void
     populate(
+            @org.jetbrains.annotations.NotNull
             java.util.Set skills
     )
     {

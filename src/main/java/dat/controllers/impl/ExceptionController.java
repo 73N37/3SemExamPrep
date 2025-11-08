@@ -1,24 +1,55 @@
 package dat.controllers.impl;
 
-import dat.exceptions.ApiException;
-import dat.exceptions.Message;
-import dat.routes.Routes;
-import io.javalin.http.Context;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public
+class
+ExceptionController {
+    private final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(
+            dat.routes.Routes.class
+    );
 
-public class ExceptionController {
-    private final Logger LOGGER = LoggerFactory.getLogger(Routes.class);
+    public
+    void
+    apiExceptionHandler(
+            dat.exceptions.ApiException     e,
+            io.javalin.http.Context         ctx
+    ) {
+        LOGGER.error(
+                ctx.attribute(
+                        "requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage()
+        );
 
-    public void apiExceptionHandler(ApiException e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
-        ctx.status(e.getStatusCode());
-        ctx.json(new Message(e.getStatusCode(), e.getMessage()));
+        ctx.status(
+                e.getStatusCode()
+        );
+
+        ctx.json(
+                new dat.exceptions.Message(
+                        e.getStatusCode(),
+                        e.getMessage()
+                )
+        );
     }
-    public void exceptionHandler(Exception e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
-        ctx.status(500);
-        ctx.json(new Message(500, e.getMessage()));
+
+    public
+    void
+    exceptionHandler(
+            java.lang.Exception e,
+            io.javalin.http.Context ctx
+    ) {
+        LOGGER.error(
+                ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage()
+        );
+
+        ctx.status(
+                500
+        );
+
+        ctx.json(
+                new dat.exceptions.Message(
+                        500,
+                        e.getMessage()
+                )
+        );
     }
 
 }

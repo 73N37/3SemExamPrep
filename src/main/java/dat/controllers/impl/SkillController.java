@@ -312,7 +312,7 @@ SkillController
             io.javalin.http.Context ctx
     ) {
         dao.populate(
-                dat.config.Populate.getSkills()
+                dat.config.Populate.populateSkills()
         );
 
         ctx.res().setStatus(

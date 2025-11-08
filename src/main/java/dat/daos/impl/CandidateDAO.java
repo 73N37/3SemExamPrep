@@ -8,9 +8,9 @@ CandidateDAO
                                     java.lang.Long          >
 {
 
-    private static CandidateDAO                             instance;
-    private static jakarta.persistence.EntityManagerFactory emf;
-    private final dat.services.SkillStatsService             skillStatsService = new dat.services.SkillStatsService();
+    private static CandidateDAO                                 instance;
+    private static jakarta.persistence.EntityManagerFactory     emf;
+    private final dat.services.SkillStatsService                skillStatsService = new dat.services.SkillStatsService();
 
     public 
     static
@@ -60,11 +60,15 @@ CandidateDAO
             for (
                     dat.entities.Skill skill : skillsWithStats
             )   {
-                candidateWithSkillStats.addSkill(skill);
+                candidateWithSkillStats.addSkill(
+                        skill
+                );
             }
 
 
-            return new dat.dtos.CandidateDTO(candidateWithSkillStats);
+            return new dat.dtos.CandidateDTO(
+                    candidateWithSkillStats
+            );
         }
     }
 
@@ -188,8 +192,7 @@ CandidateDAO
     delete
             (
                     java.lang.Long id
-            )
-            throws dat.exceptions.ApiException
+            )   throws dat.exceptions.ApiException
     {
         try (
                 jakarta.persistence.EntityManager em = emf.createEntityManager()
@@ -197,12 +200,21 @@ CandidateDAO
         {
             em.getTransaction().begin();
 
-            dat.entities.Candidate candidate = em.find(dat.entities.Candidate.class, id);
+            dat.entities.Candidate candidate = em.find(
+                    dat.entities.Candidate.class,
+                    id
+            );
 
-            if (candidate != null) {
+            if (
+                    candidate != null
+            ) {
                 // Remove candidate from all associated skills
-                for (dat.entities.Skill skill : candidate.getSkills()) {
-                    skill.getCandidates().remove(candidate);
+                for (
+                        dat.entities.Skill skill : candidate.getSkills()
+                ) {
+                    skill.getCandidates().remove(
+                            candidate
+                    );
                 }
                 candidate.getSkills().clear();
 
@@ -210,7 +222,10 @@ CandidateDAO
                 em.getTransaction().commit();
             } else {
                 em.getTransaction().rollback();
-                throw new dat.exceptions.ApiException(502, "Candidate with id=" + id + " not found");
+                throw new dat.exceptions.ApiException(
+                        502,
+                        "Candidate with id=" + id + " not found"
+                );
             }
         }
     }
@@ -283,6 +298,9 @@ CandidateDAO
         }
     }
 
+
+
+
     public
     java.util.List<dat.dtos.CandidateDTO>
     filterByCategory
@@ -342,6 +360,7 @@ CandidateDAO
             );
         }
     }
+
 
     public
     boolean

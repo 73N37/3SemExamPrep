@@ -83,16 +83,21 @@ Candidate {
 
     public
     void
-    addSkill
-            (
-                    dat.entities.Skill skill
-            )
-    {
+    addSkill(
+            dat.entities.Skill skill
+    ) {
         this.skills.add(
                 skill
         );
     }
 
+    public
+    void
+    removeSkill(
+            dat.entities.Skill skill
+    ) {
+        this.skills.remove(skill);
+    }
 
     public
     void
